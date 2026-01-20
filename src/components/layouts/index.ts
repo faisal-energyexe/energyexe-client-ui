@@ -1,0 +1,1 @@
+export { WindfarmDetailsPage } from './WindfarmDetailsPage'

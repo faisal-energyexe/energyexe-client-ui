@@ -1,0 +1,786 @@
+/* Obsidian Theme - Deep Navy (#0E2841) based palette */
+/* World-class premium dark theme with sophisticated visual effects */
+
+/*
+  Color Palette based on #0E2841:
+  - Base Navy:     #0E2841 (primary dark)
+  - Deep Navy:     #071525 (darkest - backgrounds)
+  - Navy Mid:      #153555 (cards, elevated surfaces)
+  - Navy Light:    #1E4A6D (borders, subtle elements)
+  - Accent Blue:   #3B82F6 (primary actions)
+  - Accent Cyan:   #22D3EE (secondary accent)
+  - Accent Teal:   #14B8A6 (success states)
+  - Foreground:    #E2E8F0 (text)
+  - Muted:         #64748B (secondary text)
+*/
+
+.theme-obsidian {
+  /* Core colors - Light Mode (clean, bright with blue undertones) */
+  --background: oklch(0.98 0.005 240);
+  --foreground: oklch(0.15 0.04 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.04 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.04 240);
+
+  /* Primary - Deep Blue for contrast on light */
+  --primary: oklch(0.50 0.22 250);
+  --primary-foreground: oklch(0.98 0.005 250);
+
+  /* Secondary - Light slate */
+  --secondary: oklch(0.95 0.01 240);
+  --secondary-foreground: oklch(0.25 0.04 240);
+
+  /* Muted - Soft grays */
+  --muted: oklch(0.95 0.008 240);
+  --muted-foreground: oklch(0.45 0.02 240);
+
+  /* Accent - Teal for light mode */
+  --accent: oklch(0.50 0.12 195);
+  --accent-foreground: oklch(0.98 0.01 195);
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
+
+  /* Borders & Input */
+  --border: oklch(0.90 0.01 240);
+  --input: oklch(0.95 0.008 240);
+  --ring: oklch(0.50 0.22 250);
+
+  /* Chart colors - Deeper for light backgrounds */
+  --chart-1: oklch(0.50 0.22 250);
+  --chart-2: oklch(0.50 0.15 195);
+  --chart-3: oklch(0.50 0.15 170);
+  --chart-4: oklch(0.55 0.18 280);
+  --chart-5: oklch(0.50 0.14 145);
+  --chart-6: oklch(0.45 0.12 220);
+
+  /* Border radius */
+  --radius: 0.5rem;
+
+  /* Sidebar - Dark sidebar even in light mode for contrast */
+  --sidebar: oklch(0.15 0.04 240);
+  --sidebar-foreground: oklch(0.90 0.01 240);
+  --sidebar-primary: oklch(0.60 0.20 250);
+  --sidebar-primary-foreground: oklch(0.98 0.005 250);
+  --sidebar-accent: oklch(0.25 0.05 240);
+  --sidebar-accent-foreground: oklch(0.90 0.01 240);
+  --sidebar-border: oklch(0.22 0.04 240);
+  --sidebar-ring: oklch(0.60 0.20 250);
+}
+
+.theme-obsidian.dark {
+  /* Core colors - Dark Mode (Deep Navy #0E2841 based) */
+  /* #071525 - darkest background */
+  --background: oklch(0.12 0.035 240);
+  /* #0E2841 - card background */
+  --foreground: oklch(0.92 0.015 220);
+  --card: oklch(0.18 0.045 240);
+  --card-foreground: oklch(0.92 0.015 220);
+  --popover: oklch(0.18 0.045 240);
+  --popover-foreground: oklch(0.92 0.015 220);
+
+  /* Primary - Bright Blue #3B82F6 */
+  --primary: oklch(0.65 0.20 250);
+  --primary-foreground: oklch(0.98 0.005 250);
+
+  /* Secondary - Navy Mid #153555 */
+  --secondary: oklch(0.25 0.05 240);
+  --secondary-foreground: oklch(0.90 0.015 220);
+
+  /* Muted */
+  --muted: oklch(0.22 0.04 240);
+  --muted-foreground: oklch(0.55 0.025 230);
+
+  /* Accent - Cyan #22D3EE */
+  --accent: oklch(0.80 0.15 195);
+  --accent-foreground: oklch(0.12 0.035 195);
+
+  /* Destructive */
+  --destructive: oklch(0.60 0.25 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
+
+  /* Borders & Input - #1E4A6D */
+  --border: oklch(0.35 0.06 240);
+  --input: oklch(0.22 0.04 240);
+  --ring: oklch(0.65 0.20 250);
+
+  /* Chart colors */
+  --chart-1: oklch(0.65 0.20 250);
+  --chart-2: oklch(0.80 0.15 195);
+  --chart-3: oklch(0.70 0.15 170);
+  --chart-4: oklch(0.75 0.18 280);
+  --chart-5: oklch(0.70 0.14 145);
+  --chart-6: oklch(0.60 0.16 220);
+
+  /* Sidebar */
+  --sidebar: oklch(0.10 0.03 240);
+  --sidebar-foreground: oklch(0.90 0.015 220);
+  --sidebar-primary: oklch(0.65 0.20 250);
+  --sidebar-primary-foreground: oklch(0.98 0.005 250);
+  --sidebar-accent: oklch(0.80 0.15 195);
+  --sidebar-accent-foreground: oklch(0.12 0.035 195);
+  --sidebar-border: oklch(0.28 0.05 240);
+  --sidebar-ring: oklch(0.65 0.20 250);
+}
+
+/* ============================================
+   OBSIDIAN PREMIUM VISUAL EFFECTS
+   ============================================ */
+
+/* Base Layout Container */
+.theme-obsidian .obsidian-layout {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Animated Background Gradient */
+.theme-obsidian .obsidian-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.25 0.08 250 / 0.4), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, oklch(0.30 0.10 195 / 0.2), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 100%, oklch(0.25 0.08 280 / 0.15), transparent),
+    linear-gradient(180deg, oklch(0.10 0.03 240) 0%, oklch(0.14 0.04 240) 100%);
+  animation: obsidian-bg-shift 20s ease-in-out infinite;
+}
+
+@keyframes obsidian-bg-shift {
+  0%, 100% {
+    background-position: 0% 0%, 100% 100%, 0% 100%, 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%, 0% 100%, 100% 100%, 0% 0%;
+  }
+}
+
+/* Animated Grid Pattern Overlay */
+.theme-obsidian .obsidian-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(oklch(0.30 0.05 240 / 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.30 0.05 240 / 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+  animation: grid-fade 8s ease-in-out infinite;
+}
+
+@keyframes grid-fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* Floating Particles */
+.theme-obsidian .obsidian-particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.theme-obsidian .particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: oklch(0.65 0.20 250);
+  border-radius: 50%;
+  animation: particle-float 15s infinite;
+  opacity: 0;
+}
+
+.theme-obsidian .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+.theme-obsidian .particle:nth-child(2) { left: 20%; animation-delay: 2s; }
+.theme-obsidian .particle:nth-child(3) { left: 30%; animation-delay: 4s; }
+.theme-obsidian .particle:nth-child(4) { left: 40%; animation-delay: 1s; }
+.theme-obsidian .particle:nth-child(5) { left: 50%; animation-delay: 3s; }
+.theme-obsidian .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+.theme-obsidian .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; }
+.theme-obsidian .particle:nth-child(8) { left: 80%; animation-delay: 4.5s; }
+.theme-obsidian .particle:nth-child(9) { left: 90%; animation-delay: 1.5s; }
+.theme-obsidian .particle:nth-child(10) { left: 95%; animation-delay: 3.5s; }
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Premium Card Styles */
+.theme-obsidian .obsidian-card {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    oklch(0.16 0.04 240 / 0.8) 0%,
+    oklch(0.12 0.035 240 / 0.9) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid oklch(0.30 0.06 240 / 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-obsidian .obsidian-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    oklch(0.65 0.20 250 / 0.05) 0%,
+    transparent 50%,
+    oklch(0.80 0.15 195 / 0.03) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.theme-obsidian .obsidian-card:hover {
+  border-color: oklch(0.65 0.20 250 / 0.5);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px oklch(0.65 0.20 250 / 0.1),
+    0 10px 40px oklch(0.65 0.20 250 / 0.15),
+    0 0 80px oklch(0.65 0.20 250 / 0.05),
+    inset 0 0 60px oklch(0.65 0.20 250 / 0.02);
+}
+
+.theme-obsidian .obsidian-card:hover::before {
+  opacity: 1;
+}
+
+/* Animated Border Gradient Card */
+.theme-obsidian .obsidian-card-glow {
+  position: relative;
+  background: oklch(0.14 0.04 240);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.theme-obsidian .obsidian-card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from 0deg,
+    oklch(0.65 0.20 250),
+    oklch(0.80 0.15 195),
+    oklch(0.70 0.15 170),
+    oklch(0.75 0.18 280),
+    oklch(0.65 0.20 250)
+  );
+  border-radius: 18px;
+  z-index: -1;
+  animation: border-rotate 4s linear infinite;
+  opacity: 0.6;
+}
+
+.theme-obsidian .obsidian-card-glow::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: oklch(0.14 0.04 240);
+  border-radius: 15px;
+  z-index: -1;
+}
+
+@keyframes border-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Stat Card with Top Glow Line */
+.theme-obsidian .stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-obsidian .stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.65 0.20 250),
+    oklch(0.80 0.15 195),
+    oklch(0.65 0.20 250),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer-line 3s ease-in-out infinite;
+}
+
+@keyframes shimmer-line {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Glowing Accent Line */
+.theme-obsidian .glow-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.65 0.20 250 / 0.3),
+    oklch(0.80 0.15 195),
+    oklch(0.65 0.20 250 / 0.3),
+    transparent
+  );
+  position: relative;
+}
+
+.theme-obsidian .glow-line::after {
+  content: '';
+  position: absolute;
+  inset: -4px 20%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.80 0.15 195 / 0.4),
+    transparent
+  );
+  filter: blur(8px);
+}
+
+/* Premium Gradient Text */
+.theme-obsidian .gradient-text {
+  background: linear-gradient(
+    135deg,
+    oklch(0.95 0.01 220) 0%,
+    oklch(0.70 0.18 250) 40%,
+    oklch(0.85 0.15 195) 70%,
+    oklch(0.95 0.01 220) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Pulse Animation for Active Elements */
+@keyframes obsidian-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 oklch(0.65 0.20 250 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 12px oklch(0.65 0.20 250 / 0);
+  }
+}
+
+.theme-obsidian .pulse-active {
+  animation: obsidian-pulse 2s ease-in-out infinite;
+}
+
+/* Live Indicator Pulse */
+@keyframes live-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+.theme-obsidian .live-indicator {
+  position: relative;
+}
+
+.theme-obsidian .live-indicator::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: live-pulse 2s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+/* Shimmer Effect for Loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.theme-obsidian .shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.20 0.04 240) 25%,
+    oklch(0.30 0.05 240) 50%,
+    oklch(0.20 0.04 240) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Number Counter Animation */
+.theme-obsidian .stat-value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 30px oklch(0.65 0.20 250 / 0.3);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.theme-obsidian .floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Ambient Glow Effect */
+.theme-obsidian .ambient-glow {
+  position: relative;
+}
+
+.theme-obsidian .ambient-glow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    oklch(0.65 0.20 250 / 0.1) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Success Glow State */
+.theme-obsidian .success-glow {
+  color: oklch(0.70 0.15 170);
+  text-shadow: 0 0 20px oklch(0.70 0.15 170 / 0.5);
+}
+
+/* Warning Glow State */
+.theme-obsidian .warning-glow {
+  color: oklch(0.75 0.18 80);
+  text-shadow: 0 0 20px oklch(0.75 0.18 80 / 0.5);
+}
+
+/* Error Glow State */
+.theme-obsidian .error-glow {
+  color: oklch(0.65 0.25 25);
+  text-shadow: 0 0 20px oklch(0.65 0.25 25 / 0.5);
+}
+
+/* Interactive Icon Button */
+.theme-obsidian .icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: oklch(0.20 0.04 240 / 0.5);
+  border: 1px solid oklch(0.30 0.05 240 / 0.5);
+  color: oklch(0.70 0.02 240);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.theme-obsidian .icon-btn:hover {
+  background: oklch(0.25 0.05 240);
+  border-color: oklch(0.65 0.20 250 / 0.5);
+  color: oklch(0.65 0.20 250);
+  box-shadow: 0 0 20px oklch(0.65 0.20 250 / 0.2);
+}
+
+/* Premium Badge */
+.theme-obsidian .premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, oklch(0.65 0.20 250 / 0.2), oklch(0.80 0.15 195 / 0.2));
+  border: 1px solid oklch(0.65 0.20 250 / 0.3);
+  color: oklch(0.80 0.15 195);
+}
+
+/* Data Row Hover */
+.theme-obsidian .data-row {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.theme-obsidian .data-row:hover {
+  background: oklch(0.20 0.04 240 / 0.5);
+  transform: translateX(4px);
+}
+
+/* Chart Container */
+.theme-obsidian .chart-container {
+  position: relative;
+}
+
+.theme-obsidian .chart-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at bottom,
+    oklch(0.65 0.20 250 / 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Progress Bar Enhancement */
+.theme-obsidian .progress-bar {
+  position: relative;
+  height: 6px;
+  background: oklch(0.20 0.04 240);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.theme-obsidian .progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, oklch(0.65 0.20 250), oklch(0.80 0.15 195));
+  border-radius: 3px;
+  position: relative;
+}
+
+.theme-obsidian .progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(1 0 0 / 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Tooltip Enhancement */
+.theme-obsidian .tooltip {
+  background: oklch(0.18 0.045 240 / 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid oklch(0.30 0.05 240 / 0.5);
+  border-radius: 8px;
+  box-shadow: 0 10px 40px oklch(0 0 0 / 0.4);
+}
+
+/* Section Divider */
+.theme-obsidian .section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.30 0.05 240),
+    transparent
+  );
+  margin: 32px 0;
+}
+
+/* Keyboard Shortcut Style */
+.theme-obsidian .kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-family: inherit;
+  background: oklch(0.20 0.04 240);
+  border: 1px solid oklch(0.30 0.05 240);
+  border-radius: 6px;
+  box-shadow: 0 2px 0 oklch(0.15 0.03 240);
+}
+
+/* Status Dot */
+.theme-obsidian .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.theme-obsidian .status-dot.online {
+  background: oklch(0.70 0.20 145);
+  box-shadow: 0 0 10px oklch(0.70 0.20 145 / 0.5);
+}
+
+.theme-obsidian .status-dot.offline {
+  background: oklch(0.50 0.02 240);
+}
+
+.theme-obsidian .status-dot.warning {
+  background: oklch(0.75 0.18 80);
+  box-shadow: 0 0 10px oklch(0.75 0.18 80 / 0.5);
+}
+
+.theme-obsidian .status-dot.error {
+  background: oklch(0.65 0.25 25);
+  box-shadow: 0 0 10px oklch(0.65 0.25 25 / 0.5);
+  animation: live-pulse 1s ease-in-out infinite;
+}
+
+/* Scrollbar Styling */
+.theme-obsidian ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.theme-obsidian ::-webkit-scrollbar-track {
+  background: oklch(0.12 0.03 240);
+}
+
+.theme-obsidian ::-webkit-scrollbar-thumb {
+  background: oklch(0.25 0.04 240);
+  border-radius: 4px;
+}
+
+.theme-obsidian ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.35 0.05 240);
+}
+
+/* Selection Color */
+.theme-obsidian ::selection {
+  background: oklch(0.65 0.20 250 / 0.3);
+  color: oklch(0.95 0.01 220);
+}
+
+/* Focus Ring */
+.theme-obsidian *:focus-visible {
+  outline: 2px solid oklch(0.65 0.20 250);
+  outline-offset: 2px;
+}
+
+/* Orb Glow Decoration */
+.theme-obsidian .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: orb-float 20s ease-in-out infinite;
+}
+
+.theme-obsidian .orb-blue {
+  background: oklch(0.50 0.20 250);
+}
+
+.theme-obsidian .orb-cyan {
+  background: oklch(0.60 0.15 195);
+}
+
+.theme-obsidian .orb-purple {
+  background: oklch(0.45 0.18 280);
+}
+
+@keyframes orb-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(20px, 30px) scale(1.05);
+  }
+}
+
+/* Noise Texture Overlay */
+.theme-obsidian .noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Metric Card Variants */
+.theme-obsidian .metric-positive {
+  --metric-color: oklch(0.70 0.20 145);
+}
+
+.theme-obsidian .metric-negative {
+  --metric-color: oklch(0.65 0.25 25);
+}
+
+.theme-obsidian .metric-neutral {
+  --metric-color: oklch(0.65 0.20 250);
+}
+
+/* Glass Panel */
+.theme-obsidian .glass-panel {
+  background: oklch(0.15 0.04 240 / 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid oklch(0.30 0.05 240 / 0.3);
+}
+
+/* Neon Text Effect */
+.theme-obsidian .neon-text {
+  color: oklch(0.80 0.15 195);
+  text-shadow:
+    0 0 5px oklch(0.80 0.15 195 / 0.5),
+    0 0 20px oklch(0.80 0.15 195 / 0.3),
+    0 0 40px oklch(0.80 0.15 195 / 0.2);
+}
+
+/* Header with Blur */
+.theme-obsidian .header-blur {
+  background: oklch(0.12 0.035 240 / 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid oklch(0.25 0.04 240 / 0.5);
+}
+
+/* Sidebar Link Active State */
+.theme-obsidian .sidebar-link-active {
+  background: linear-gradient(90deg, oklch(0.65 0.20 250 / 0.15), transparent);
+  border-left: 2px solid oklch(0.65 0.20 250);
+}
