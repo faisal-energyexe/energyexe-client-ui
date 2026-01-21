@@ -1,15 +1,15 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router'
-import { LoginForm } from '@/components/auth/login-form'
+import { createFileRoute, Navigate, Link } from '@tanstack/react-router'
+import { RegisterForm } from '@/components/auth/register-form'
 import { useAuth } from '@/contexts/auth-context'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { ObsidianBackground } from '@/components/layouts/obsidian/ObsidianBackground'
 import { Zap } from 'lucide-react'
 
-export const Route = createFileRoute('/login')({
-  component: LoginPage,
+export const Route = createFileRoute('/register')({
+  component: RegisterPage,
 })
 
-function LoginPage() {
+function RegisterPage() {
   const { isAuthenticated, isLoading } = useAuth()
 
   // If already authenticated, redirect to home
@@ -41,8 +41,21 @@ function LoginPage() {
             </p>
           </div>
 
-          {/* Login form card */}
-          <LoginForm />
+          {/* Register form card */}
+          <div className="w-full max-w-md space-y-6">
+            <RegisterForm />
+
+            {/* Sign in link */}
+            <p className="text-center text-sm text-muted-foreground">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="text-primary hover:text-primary/80 font-medium transition-colors"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
 
           {/* Footer */}
           <div className="mt-8 text-center text-xs text-muted-foreground">

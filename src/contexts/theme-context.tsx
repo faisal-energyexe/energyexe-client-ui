@@ -30,8 +30,20 @@ export function ThemeProvider({
   defaultTheme?: Theme
   defaultMode?: Mode
 }) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme)
-  const [mode, setModeState] = useState<Mode>(defaultMode)
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('energyexe-theme')
+      if (stored === 'obsidian') return stored
+    }
+    return defaultTheme
+  })
+  const [mode, setModeState] = useState<Mode>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('energyexe-mode')
+      if (stored === 'light' || stored === 'dark') return stored
+    }
+    return defaultMode
+  })
 
   useEffect(() => {
     // Apply theme and mode classes to document

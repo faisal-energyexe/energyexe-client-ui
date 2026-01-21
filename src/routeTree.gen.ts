@@ -9,16 +9,49 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PendingApprovalRouteImport } from './routes/pending-approval'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InvitationTokenRouteImport } from './routes/invitation.$token'
 import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
+import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
+import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PendingApprovalRoute = PendingApprovalRouteImport.update({
+  id: '/pending-approval',
+  path: '/pending-approval',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoRoute = DemoRouteImport.update({
@@ -35,6 +68,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InvitationTokenRoute = InvitationTokenRouteImport.update({
+  id: '/invitation/$token',
+  path: '/invitation/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoWindfarmRoute = DemoWindfarmRouteImport.update({
   id: '/windfarm',
   path: '/windfarm',
@@ -45,59 +83,169 @@ const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedWindFarmsIndexRoute = ProtectedWindFarmsIndexRouteImport.update({
+  id: '/wind-farms/',
+  path: '/wind-farms/',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedWindFarmsWindfarmIdRoute =
+  ProtectedWindFarmsWindfarmIdRouteImport.update({
+    id: '/wind-farms/$windfarmId',
+    path: '/wind-farms/$windfarmId',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo': typeof DemoRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/pending-approval': typeof PendingApprovalRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
+  '/invitation/$token': typeof InvitationTokenRoute
+  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/wind-farms/': typeof ProtectedWindFarmsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo': typeof DemoRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/pending-approval': typeof PendingApprovalRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
+  '/invitation/$token': typeof InvitationTokenRoute
+  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/wind-farms': typeof ProtectedWindFarmsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/demo': typeof DemoRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/pending-approval': typeof PendingApprovalRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
+  '/invitation/$token': typeof InvitationTokenRoute
+  '/_protected/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/_protected/wind-farms/': typeof ProtectedWindFarmsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo' | '/login' | '/dashboard' | '/demo/windfarm'
+  fullPaths:
+    | '/'
+    | '/demo'
+    | '/forgot-password'
+    | '/login'
+    | '/pending-approval'
+    | '/register'
+    | '/reset-password'
+    | '/verify-email'
+    | '/dashboard'
+    | '/demo/windfarm'
+    | '/invitation/$token'
+    | '/wind-farms/$windfarmId'
+    | '/wind-farms/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo' | '/login' | '/dashboard' | '/demo/windfarm'
+  to:
+    | '/'
+    | '/demo'
+    | '/forgot-password'
+    | '/login'
+    | '/pending-approval'
+    | '/register'
+    | '/reset-password'
+    | '/verify-email'
+    | '/dashboard'
+    | '/demo/windfarm'
+    | '/invitation/$token'
+    | '/wind-farms/$windfarmId'
+    | '/wind-farms'
   id:
     | '__root__'
     | '/'
     | '/_protected'
     | '/demo'
+    | '/forgot-password'
     | '/login'
+    | '/pending-approval'
+    | '/register'
+    | '/reset-password'
+    | '/verify-email'
     | '/_protected/dashboard'
     | '/demo/windfarm'
+    | '/invitation/$token'
+    | '/_protected/wind-farms/$windfarmId'
+    | '/_protected/wind-farms/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
   DemoRoute: typeof DemoRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
+  PendingApprovalRoute: typeof PendingApprovalRoute
+  RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
+  InvitationTokenRoute: typeof InvitationTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pending-approval': {
+      id: '/pending-approval'
+      path: '/pending-approval'
+      fullPath: '/pending-approval'
+      preLoaderRoute: typeof PendingApprovalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo': {
@@ -121,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invitation/$token': {
+      id: '/invitation/$token'
+      path: '/invitation/$token'
+      fullPath: '/invitation/$token'
+      preLoaderRoute: typeof InvitationTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/windfarm': {
       id: '/demo/windfarm'
       path: '/windfarm'
@@ -135,15 +290,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/wind-farms/': {
+      id: '/_protected/wind-farms/'
+      path: '/wind-farms'
+      fullPath: '/wind-farms/'
+      preLoaderRoute: typeof ProtectedWindFarmsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/wind-farms/$windfarmId': {
+      id: '/_protected/wind-farms/$windfarmId'
+      path: '/wind-farms/$windfarmId'
+      fullPath: '/wind-farms/$windfarmId'
+      preLoaderRoute: typeof ProtectedWindFarmsWindfarmIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
 interface ProtectedRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRoute
+  ProtectedWindFarmsIndexRoute: typeof ProtectedWindFarmsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedWindFarmsWindfarmIdRoute: ProtectedWindFarmsWindfarmIdRoute,
+  ProtectedWindFarmsIndexRoute: ProtectedWindFarmsIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -164,7 +337,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
   DemoRoute: DemoRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
+  PendingApprovalRoute: PendingApprovalRoute,
+  RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
+  InvitationTokenRoute: InvitationTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -59,15 +59,15 @@
   /* Border radius */
   --radius: 0.5rem;
 
-  /* Sidebar - Dark sidebar even in light mode for contrast */
-  --sidebar: oklch(0.15 0.04 240);
-  --sidebar-foreground: oklch(0.90 0.01 240);
-  --sidebar-primary: oklch(0.60 0.20 250);
+  /* Sidebar - Light mode */
+  --sidebar: oklch(0.97 0.005 240);
+  --sidebar-foreground: oklch(0.20 0.04 240);
+  --sidebar-primary: oklch(0.50 0.22 250);
   --sidebar-primary-foreground: oklch(0.98 0.005 250);
-  --sidebar-accent: oklch(0.25 0.05 240);
-  --sidebar-accent-foreground: oklch(0.90 0.01 240);
-  --sidebar-border: oklch(0.22 0.04 240);
-  --sidebar-ring: oklch(0.60 0.20 250);
+  --sidebar-accent: oklch(0.93 0.01 240);
+  --sidebar-accent-foreground: oklch(0.20 0.04 240);
+  --sidebar-border: oklch(0.90 0.01 240);
+  --sidebar-ring: oklch(0.50 0.22 250);
 }
 
 .theme-obsidian.dark {

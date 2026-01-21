@@ -1,4 +1,4 @@
-export type UserRole = 'user' | 'admin'
+export type UserRole = 'admin' | 'client'
 
 export type UserStatus = 'active' | 'inactive' | 'invited' | 'suspended'
 
@@ -16,11 +16,27 @@ export interface User {
   created_at: string
   updated_at: string
   last_login_at?: string
+  // Client portal fields
+  is_approved?: boolean
+  email_verified?: boolean
+  company_name?: string
+  phone?: string
+  approved_at?: string
+  features?: Record<string, boolean>
 }
 
 export interface LoginRequest {
   username: string
   password: string
+}
+
+export interface RegisterRequest {
+  email: string
+  password: string
+  first_name: string
+  last_name: string
+  company_name: string
+  phone?: string
 }
 
 export interface AuthResponse {
@@ -38,5 +54,25 @@ export interface AuthState {
 
 export interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
+}
+
+export interface EmailVerificationResponse {
+  message: string
+  email: string
+  is_approved: boolean
+}
+
+export interface InvitationValidation {
+  valid: boolean
+  email?: string
+  message?: string
+}
+
+export interface InvitationAcceptRequest {
+  first_name: string
+  last_name: string
+  password: string
+  company_name: string
+  phone?: string
 }

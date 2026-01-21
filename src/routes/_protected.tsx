@@ -1,6 +1,7 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { ProtectedRoute } from '@/components/auth/protected-route'
-import Header from '@/components/Header'
+import { AppLayout } from '@/components/layout/app-layout'
+import { ThemeProvider } from '@/contexts/theme-context'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: ({ context }) => {
@@ -19,8 +20,11 @@ export const Route = createFileRoute('/_protected')({
 function ProtectedLayout() {
   return (
     <ProtectedRoute>
-      <Header />
-      <Outlet />
+      <ThemeProvider>
+        <AppLayout>
+          <Outlet />
+        </AppLayout>
+      </ThemeProvider>
     </ProtectedRoute>
   )
 }
