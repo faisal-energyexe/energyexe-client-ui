@@ -42,7 +42,6 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
       label: 'Weather',
       icon: Cloud,
       route: 'weather',
-      disabled: true, // Phase 3
     },
     {
       id: 'market',
@@ -120,6 +119,27 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
               <Link
                 key={tab.id}
                 to="/wind-farms/$windfarmId/generation"
+                params={{ windfarmId: windfarmId.toString() }}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-3 text-sm font-medium',
+                  'transition-colors whitespace-nowrap',
+                  'border-b-2',
+                  active
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </Link>
+            )
+          }
+
+          if (tab.id === 'weather') {
+            return (
+              <Link
+                key={tab.id}
+                to="/wind-farms/$windfarmId/weather"
                 params={{ windfarmId: windfarmId.toString() }}
                 className={cn(
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium',
