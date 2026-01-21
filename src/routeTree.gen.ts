@@ -24,6 +24,7 @@ import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dash
 import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
 import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
 import { Route as ProtectedWindFarmsWindfarmIdWeatherRouteImport } from './routes/_protected.wind-farms.$windfarmId.weather'
+import { Route as ProtectedWindFarmsWindfarmIdMarketRouteImport } from './routes/_protected.wind-farms.$windfarmId.market'
 import { Route as ProtectedWindFarmsWindfarmIdGenerationRouteImport } from './routes/_protected.wind-farms.$windfarmId.generation'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
@@ -102,6 +103,12 @@ const ProtectedWindFarmsWindfarmIdWeatherRoute =
     path: '/weather',
     getParentRoute: () => ProtectedWindFarmsWindfarmIdRoute,
   } as any)
+const ProtectedWindFarmsWindfarmIdMarketRoute =
+  ProtectedWindFarmsWindfarmIdMarketRouteImport.update({
+    id: '/market',
+    path: '/market',
+    getParentRoute: () => ProtectedWindFarmsWindfarmIdRoute,
+  } as any)
 const ProtectedWindFarmsWindfarmIdGenerationRoute =
   ProtectedWindFarmsWindfarmIdGenerationRouteImport.update({
     id: '/generation',
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms/': typeof ProtectedWindFarmsIndexRoute
   '/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
+  '/wind-farms/$windfarmId/market': typeof ProtectedWindFarmsWindfarmIdMarketRoute
   '/wind-farms/$windfarmId/weather': typeof ProtectedWindFarmsWindfarmIdWeatherRoute
 }
 export interface FileRoutesByTo {
@@ -141,6 +149,7 @@ export interface FileRoutesByTo {
   '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms': typeof ProtectedWindFarmsIndexRoute
   '/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
+  '/wind-farms/$windfarmId/market': typeof ProtectedWindFarmsWindfarmIdMarketRoute
   '/wind-farms/$windfarmId/weather': typeof ProtectedWindFarmsWindfarmIdWeatherRoute
 }
 export interface FileRoutesById {
@@ -160,6 +169,7 @@ export interface FileRoutesById {
   '/_protected/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/_protected/wind-farms/': typeof ProtectedWindFarmsIndexRoute
   '/_protected/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
+  '/_protected/wind-farms/$windfarmId/market': typeof ProtectedWindFarmsWindfarmIdMarketRoute
   '/_protected/wind-farms/$windfarmId/weather': typeof ProtectedWindFarmsWindfarmIdWeatherRoute
 }
 export interface FileRouteTypes {
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/wind-farms/$windfarmId'
     | '/wind-farms/'
     | '/wind-farms/$windfarmId/generation'
+    | '/wind-farms/$windfarmId/market'
     | '/wind-farms/$windfarmId/weather'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/wind-farms/$windfarmId'
     | '/wind-farms'
     | '/wind-farms/$windfarmId/generation'
+    | '/wind-farms/$windfarmId/market'
     | '/wind-farms/$windfarmId/weather'
   id:
     | '__root__'
@@ -214,6 +226,7 @@ export interface FileRouteTypes {
     | '/_protected/wind-farms/$windfarmId'
     | '/_protected/wind-farms/'
     | '/_protected/wind-farms/$windfarmId/generation'
+    | '/_protected/wind-farms/$windfarmId/market'
     | '/_protected/wind-farms/$windfarmId/weather'
   fileRoutesById: FileRoutesById
 }
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedWindFarmsWindfarmIdWeatherRouteImport
       parentRoute: typeof ProtectedWindFarmsWindfarmIdRoute
     }
+    '/_protected/wind-farms/$windfarmId/market': {
+      id: '/_protected/wind-farms/$windfarmId/market'
+      path: '/market'
+      fullPath: '/wind-farms/$windfarmId/market'
+      preLoaderRoute: typeof ProtectedWindFarmsWindfarmIdMarketRouteImport
+      parentRoute: typeof ProtectedWindFarmsWindfarmIdRoute
+    }
     '/_protected/wind-farms/$windfarmId/generation': {
       id: '/_protected/wind-farms/$windfarmId/generation'
       path: '/generation'
@@ -349,6 +369,7 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedWindFarmsWindfarmIdRouteChildren {
   ProtectedWindFarmsWindfarmIdGenerationRoute: typeof ProtectedWindFarmsWindfarmIdGenerationRoute
+  ProtectedWindFarmsWindfarmIdMarketRoute: typeof ProtectedWindFarmsWindfarmIdMarketRoute
   ProtectedWindFarmsWindfarmIdWeatherRoute: typeof ProtectedWindFarmsWindfarmIdWeatherRoute
 }
 
@@ -356,6 +377,8 @@ const ProtectedWindFarmsWindfarmIdRouteChildren: ProtectedWindFarmsWindfarmIdRou
   {
     ProtectedWindFarmsWindfarmIdGenerationRoute:
       ProtectedWindFarmsWindfarmIdGenerationRoute,
+    ProtectedWindFarmsWindfarmIdMarketRoute:
+      ProtectedWindFarmsWindfarmIdMarketRoute,
     ProtectedWindFarmsWindfarmIdWeatherRoute:
       ProtectedWindFarmsWindfarmIdWeatherRoute,
   }
