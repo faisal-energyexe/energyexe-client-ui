@@ -23,6 +23,7 @@ import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
 import { Route as ProtectedPortfoliosRouteImport } from './routes/_protected.portfolios'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
 import { Route as ProtectedComparisonRouteImport } from './routes/_protected.comparison'
+import { Route as ProtectedAlertsRouteImport } from './routes/_protected.alerts'
 import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
 import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
 import { Route as ProtectedPortfoliosPortfolioIdRouteImport } from './routes/_protected.portfolios.$portfolioId'
@@ -100,6 +101,11 @@ const ProtectedComparisonRoute = ProtectedComparisonRouteImport.update({
   path: '/comparison',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedAlertsRoute = ProtectedAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedWindFarmsIndexRoute = ProtectedWindFarmsIndexRouteImport.update({
   id: '/wind-farms/',
   path: '/wind-farms/',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/alerts': typeof ProtectedAlertsRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/alerts': typeof ProtectedAlertsRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/_protected/alerts': typeof ProtectedAlertsRoute
   '/_protected/comparison': typeof ProtectedComparisonRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/portfolios': typeof ProtectedPortfoliosRouteWithChildren
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/alerts'
     | '/comparison'
     | '/dashboard'
     | '/portfolios'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/alerts'
     | '/comparison'
     | '/dashboard'
     | '/portfolios'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/_protected/alerts'
     | '/_protected/comparison'
     | '/_protected/dashboard'
     | '/_protected/portfolios'
@@ -393,6 +405,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedComparisonRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/alerts': {
+      id: '/_protected/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof ProtectedAlertsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/wind-farms/': {
       id: '/_protected/wind-farms/'
       path: '/wind-farms'
@@ -481,6 +500,7 @@ const ProtectedWindFarmsWindfarmIdRouteWithChildren =
   )
 
 interface ProtectedRouteChildren {
+  ProtectedAlertsRoute: typeof ProtectedAlertsRoute
   ProtectedComparisonRoute: typeof ProtectedComparisonRoute
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
   ProtectedPortfoliosRoute: typeof ProtectedPortfoliosRouteWithChildren
@@ -489,6 +509,7 @@ interface ProtectedRouteChildren {
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedAlertsRoute: ProtectedAlertsRoute,
   ProtectedComparisonRoute: ProtectedComparisonRoute,
   ProtectedDashboardRoute: ProtectedDashboardRoute,
   ProtectedPortfoliosRoute: ProtectedPortfoliosRouteWithChildren,
