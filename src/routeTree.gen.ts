@@ -21,6 +21,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as InvitationTokenRouteImport } from './routes/invitation.$token'
 import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
 import { Route as ProtectedPortfoliosRouteImport } from './routes/_protected.portfolios'
+import { Route as ProtectedMapRouteImport } from './routes/_protected.map'
+import { Route as ProtectedExportRouteImport } from './routes/_protected.export'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
 import { Route as ProtectedComparisonRouteImport } from './routes/_protected.comparison'
 import { Route as ProtectedAlertsRouteImport } from './routes/_protected.alerts'
@@ -89,6 +91,16 @@ const DemoWindfarmRoute = DemoWindfarmRouteImport.update({
 const ProtectedPortfoliosRoute = ProtectedPortfoliosRouteImport.update({
   id: '/portfolios',
   path: '/portfolios',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedMapRoute = ProtectedMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedExportRoute = ProtectedExportRouteImport.update({
+  id: '/export',
+  path: '/export',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
@@ -160,6 +172,8 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof ProtectedAlertsRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
+  '/export': typeof ProtectedExportRoute
+  '/map': typeof ProtectedMapRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -183,6 +197,8 @@ export interface FileRoutesByTo {
   '/alerts': typeof ProtectedAlertsRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
+  '/export': typeof ProtectedExportRoute
+  '/map': typeof ProtectedMapRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -208,6 +224,8 @@ export interface FileRoutesById {
   '/_protected/alerts': typeof ProtectedAlertsRoute
   '/_protected/comparison': typeof ProtectedComparisonRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/export': typeof ProtectedExportRoute
+  '/_protected/map': typeof ProtectedMapRoute
   '/_protected/portfolios': typeof ProtectedPortfoliosRouteWithChildren
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -233,6 +251,8 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/comparison'
     | '/dashboard'
+    | '/export'
+    | '/map'
     | '/portfolios'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -256,6 +276,8 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/comparison'
     | '/dashboard'
+    | '/export'
+    | '/map'
     | '/portfolios'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -280,6 +302,8 @@ export interface FileRouteTypes {
     | '/_protected/alerts'
     | '/_protected/comparison'
     | '/_protected/dashboard'
+    | '/_protected/export'
+    | '/_protected/map'
     | '/_protected/portfolios'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -389,6 +413,20 @@ declare module '@tanstack/react-router' {
       path: '/portfolios'
       fullPath: '/portfolios'
       preLoaderRoute: typeof ProtectedPortfoliosRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/map': {
+      id: '/_protected/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof ProtectedMapRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/export': {
+      id: '/_protected/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof ProtectedExportRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/dashboard': {
@@ -503,6 +541,8 @@ interface ProtectedRouteChildren {
   ProtectedAlertsRoute: typeof ProtectedAlertsRoute
   ProtectedComparisonRoute: typeof ProtectedComparisonRoute
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedExportRoute: typeof ProtectedExportRoute
+  ProtectedMapRoute: typeof ProtectedMapRoute
   ProtectedPortfoliosRoute: typeof ProtectedPortfoliosRouteWithChildren
   ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   ProtectedWindFarmsIndexRoute: typeof ProtectedWindFarmsIndexRoute
@@ -512,6 +552,8 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAlertsRoute: ProtectedAlertsRoute,
   ProtectedComparisonRoute: ProtectedComparisonRoute,
   ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedExportRoute: ProtectedExportRoute,
+  ProtectedMapRoute: ProtectedMapRoute,
   ProtectedPortfoliosRoute: ProtectedPortfoliosRouteWithChildren,
   ProtectedWindFarmsWindfarmIdRoute:
     ProtectedWindFarmsWindfarmIdRouteWithChildren,
