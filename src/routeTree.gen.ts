@@ -23,6 +23,7 @@ import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
 import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
 import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
+import { Route as ProtectedWindFarmsWindfarmIdGenerationRouteImport } from './routes/_protected.wind-farms.$windfarmId.generation'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -94,6 +95,12 @@ const ProtectedWindFarmsWindfarmIdRoute =
     path: '/wind-farms/$windfarmId',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedWindFarmsWindfarmIdGenerationRoute =
+  ProtectedWindFarmsWindfarmIdGenerationRouteImport.update({
+    id: '/generation',
+    path: '/generation',
+    getParentRoute: () => ProtectedWindFarmsWindfarmIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,8 +114,9 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
-  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms/': typeof ProtectedWindFarmsIndexRoute
+  '/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,8 +130,9 @@ export interface FileRoutesByTo {
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
-  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms': typeof ProtectedWindFarmsIndexRoute
+  '/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,8 +148,9 @@ export interface FileRoutesById {
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
-  '/_protected/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRoute
+  '/_protected/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/_protected/wind-farms/': typeof ProtectedWindFarmsIndexRoute
+  '/_protected/wind-farms/$windfarmId/generation': typeof ProtectedWindFarmsWindfarmIdGenerationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/invitation/$token'
     | '/wind-farms/$windfarmId'
     | '/wind-farms/'
+    | '/wind-farms/$windfarmId/generation'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/invitation/$token'
     | '/wind-farms/$windfarmId'
     | '/wind-farms'
+    | '/wind-farms/$windfarmId/generation'
   id:
     | '__root__'
     | '/'
@@ -189,6 +201,7 @@ export interface FileRouteTypes {
     | '/invitation/$token'
     | '/_protected/wind-farms/$windfarmId'
     | '/_protected/wind-farms/'
+    | '/_protected/wind-farms/$windfarmId/generation'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -304,18 +317,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedWindFarmsWindfarmIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/wind-farms/$windfarmId/generation': {
+      id: '/_protected/wind-farms/$windfarmId/generation'
+      path: '/generation'
+      fullPath: '/wind-farms/$windfarmId/generation'
+      preLoaderRoute: typeof ProtectedWindFarmsWindfarmIdGenerationRouteImport
+      parentRoute: typeof ProtectedWindFarmsWindfarmIdRoute
+    }
   }
 }
 
+interface ProtectedWindFarmsWindfarmIdRouteChildren {
+  ProtectedWindFarmsWindfarmIdGenerationRoute: typeof ProtectedWindFarmsWindfarmIdGenerationRoute
+}
+
+const ProtectedWindFarmsWindfarmIdRouteChildren: ProtectedWindFarmsWindfarmIdRouteChildren =
+  {
+    ProtectedWindFarmsWindfarmIdGenerationRoute:
+      ProtectedWindFarmsWindfarmIdGenerationRoute,
+  }
+
+const ProtectedWindFarmsWindfarmIdRouteWithChildren =
+  ProtectedWindFarmsWindfarmIdRoute._addFileChildren(
+    ProtectedWindFarmsWindfarmIdRouteChildren,
+  )
+
 interface ProtectedRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
-  ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRoute
+  ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   ProtectedWindFarmsIndexRoute: typeof ProtectedWindFarmsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
-  ProtectedWindFarmsWindfarmIdRoute: ProtectedWindFarmsWindfarmIdRoute,
+  ProtectedWindFarmsWindfarmIdRoute:
+    ProtectedWindFarmsWindfarmIdRouteWithChildren,
   ProtectedWindFarmsIndexRoute: ProtectedWindFarmsIndexRoute,
 }
 

@@ -16,7 +16,7 @@ interface TabItem {
   id: string
   label: string
   icon: React.ComponentType<{ className?: string }>
-  href: string
+  route: string
   disabled?: boolean
 }
 
@@ -29,44 +29,44 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
       id: 'overview',
       label: 'Overview',
       icon: Info,
-      href: `/wind-farms/${windfarmId}`,
+      route: 'overview',
     },
     {
       id: 'generation',
       label: 'Generation',
       icon: BarChart3,
-      href: `/wind-farms/${windfarmId}/generation`,
-      disabled: true, // Phase 2
+      route: 'generation',
     },
     {
       id: 'weather',
       label: 'Weather',
       icon: Cloud,
-      href: `/wind-farms/${windfarmId}/weather`,
+      route: 'weather',
       disabled: true, // Phase 3
     },
     {
       id: 'market',
       label: 'Market & Revenue',
       icon: DollarSign,
-      href: `/wind-farms/${windfarmId}/market`,
+      route: 'market',
       disabled: true, // Phase 4
     },
     {
       id: 'turbines',
       label: 'Turbines',
       icon: Wind,
-      href: `/wind-farms/${windfarmId}/turbines`,
+      route: 'turbines',
       disabled: true, // Future
     },
   ]
 
   const isActive = (tab: TabItem) => {
+    const basePath = `/wind-farms/${windfarmId}`
     if (tab.id === 'overview') {
       // Overview is active when path is exactly the windfarm detail page
-      return currentPath === `/wind-farms/${windfarmId}`
+      return currentPath === basePath || currentPath === `${basePath}/`
     }
-    return currentPath.startsWith(tab.href)
+    return currentPath.includes(`/${tab.route}`)
   }
 
   return (
@@ -93,23 +93,62 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
             )
           }
 
+          // Use proper Link routing based on tab
+          if (tab.id === 'overview') {
+            return (
+              <Link
+                key={tab.id}
+                to="/wind-farms/$windfarmId"
+                params={{ windfarmId: windfarmId.toString() }}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-3 text-sm font-medium',
+                  'transition-colors whitespace-nowrap',
+                  'border-b-2',
+                  active
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </Link>
+            )
+          }
+
+          if (tab.id === 'generation') {
+            return (
+              <Link
+                key={tab.id}
+                to="/wind-farms/$windfarmId/generation"
+                params={{ windfarmId: windfarmId.toString() }}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-3 text-sm font-medium',
+                  'transition-colors whitespace-nowrap',
+                  'border-b-2',
+                  active
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </Link>
+            )
+          }
+
+          // Fallback for other tabs (should not reach here due to disabled check)
           return (
-            <Link
+            <div
               key={tab.id}
-              to="/wind-farms/$windfarmId"
-              params={{ windfarmId: windfarmId.toString() }}
               className={cn(
                 'flex items-center gap-2 px-4 py-3 text-sm font-medium',
-                'transition-colors whitespace-nowrap',
-                'border-b-2',
-                active
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                'text-muted-foreground/50 cursor-not-allowed',
+                'border-b-2 border-transparent'
               )}
             >
               <Icon className="h-4 w-4" />
               <span className="hidden sm:inline">{tab.label}</span>
-            </Link>
+            </div>
           )
         })}
       </nav>
