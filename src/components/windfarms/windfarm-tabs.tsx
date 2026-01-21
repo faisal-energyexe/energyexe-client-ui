@@ -4,6 +4,7 @@ import {
   BarChart3,
   Cloud,
   DollarSign,
+  FileText,
   Info,
   Wind,
 } from 'lucide-react'
@@ -48,6 +49,12 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
       label: 'Market & Revenue',
       icon: DollarSign,
       route: 'market',
+    },
+    {
+      id: 'report',
+      label: 'Report',
+      icon: FileText,
+      route: 'report',
     },
     {
       id: 'turbines',
@@ -160,6 +167,27 @@ export function WindfarmTabs({ windfarmId }: WindfarmTabsProps) {
               <Link
                 key={tab.id}
                 to="/wind-farms/$windfarmId/market"
+                params={{ windfarmId: windfarmId.toString() }}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-3 text-sm font-medium',
+                  'transition-colors whitespace-nowrap',
+                  'border-b-2',
+                  active
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </Link>
+            )
+          }
+
+          if (tab.id === 'report') {
+            return (
+              <Link
+                key={tab.id}
+                to="/wind-farms/$windfarmId/report"
                 params={{ windfarmId: windfarmId.toString() }}
                 className={cn(
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium',
