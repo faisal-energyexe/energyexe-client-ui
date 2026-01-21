@@ -21,6 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as InvitationTokenRouteImport } from './routes/invitation.$token'
 import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
+import { Route as ProtectedComparisonRouteImport } from './routes/_protected.comparison'
 import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
 import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
 import { Route as ProtectedWindFarmsWindfarmIdWeatherRouteImport } from './routes/_protected.wind-farms.$windfarmId.weather'
@@ -86,6 +87,11 @@ const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedComparisonRoute = ProtectedComparisonRouteImport.update({
+  id: '/comparison',
+  path: '/comparison',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedWindFarmsIndexRoute = ProtectedWindFarmsIndexRouteImport.update({
   id: '/wind-farms/',
   path: '/wind-farms/',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/_protected/comparison': typeof ProtectedComparisonRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/comparison'
     | '/dashboard'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/comparison'
     | '/dashboard'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/_protected/comparison'
     | '/_protected/dashboard'
     | '/demo/windfarm'
     | '/invitation/$token'
@@ -329,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/comparison': {
+      id: '/_protected/comparison'
+      path: '/comparison'
+      fullPath: '/comparison'
+      preLoaderRoute: typeof ProtectedComparisonRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/wind-farms/': {
       id: '/_protected/wind-farms/'
       path: '/wind-farms'
@@ -389,12 +408,14 @@ const ProtectedWindFarmsWindfarmIdRouteWithChildren =
   )
 
 interface ProtectedRouteChildren {
+  ProtectedComparisonRoute: typeof ProtectedComparisonRoute
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
   ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   ProtectedWindFarmsIndexRoute: typeof ProtectedWindFarmsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedComparisonRoute: ProtectedComparisonRoute,
   ProtectedDashboardRoute: ProtectedDashboardRoute,
   ProtectedWindFarmsWindfarmIdRoute:
     ProtectedWindFarmsWindfarmIdRouteWithChildren,

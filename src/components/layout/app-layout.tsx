@@ -24,6 +24,7 @@ import {
   PieChart,
   Gauge,
   AlertTriangle,
+  Scale,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -52,6 +53,7 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { title: 'Wind Farms', icon: Wind, href: '/wind-farms' },
+  { title: 'Comparison', icon: Scale, href: '/comparison' },
   { title: 'Turbines', icon: Fan, href: '/turbines' },
   { title: 'Live Monitor', icon: Activity, href: '/live-monitor', live: true },
 ]
