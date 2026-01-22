@@ -291,3 +291,89 @@ export const usePortfolioWeatherSummary = (params: PortfolioWeatherParams) => {
     enabled: !!params.start_date && !!params.end_date,
   })
 }
+
+// Types for Portfolio Performance
+export interface PortfolioPerformanceData {
+  start_date: string
+  end_date: string
+  hours_in_period: number
+  farm_count: number
+  cf_distribution: CapacityFactorBin[]
+  performance_ranking: PerformanceRanking[]
+  performance_trend: PerformanceTrend[]
+  by_technology: TechnologyPerformance[]
+  statistics: PerformanceStatistics
+}
+
+export interface CapacityFactorBin {
+  bin_start: number
+  bin_end: number
+  bin_label: string
+  count: number
+}
+
+export interface PerformanceRanking {
+  windfarm_id: number
+  windfarm_name: string
+  windfarm_code: string
+  country_name: string
+  capacity_mw: number
+  total_mwh: number
+  capacity_factor: number
+  avg_quality: number
+  record_count: number
+}
+
+export interface PerformanceTrend {
+  period: string
+  total_mwh: number
+  capacity_factor: number
+  farm_count: number
+}
+
+export interface TechnologyPerformance {
+  model_id: number
+  manufacturer: string
+  model_name: string
+  rated_power_kw: number
+  farm_count: number
+  turbine_count: number
+  total_capacity_mw: number
+  total_mwh: number
+  capacity_factor: number
+}
+
+export interface PerformanceStatistics {
+  avg_capacity_factor: number
+  max_capacity_factor: number
+  min_capacity_factor: number
+  total_capacity_mw: number
+  total_generation_mwh: number
+}
+
+export interface PortfolioPerformanceParams {
+  start_date: string
+  end_date: string
+  portfolio_id?: number
+  country_id?: number
+}
+
+export const usePortfolioPerformance = (params: PortfolioPerformanceParams) => {
+  return useQuery({
+    queryKey: [...PORTFOLIO_ANALYTICS_KEY, 'performance', params],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams()
+      searchParams.append('start_date', params.start_date)
+      searchParams.append('end_date', params.end_date)
+      if (params.portfolio_id !== undefined)
+        searchParams.append('portfolio_id', params.portfolio_id.toString())
+      if (params.country_id !== undefined)
+        searchParams.append('country_id', params.country_id.toString())
+
+      return await apiClient.get<PortfolioPerformanceData>(
+        `/generation/portfolio/performance?${searchParams.toString()}`,
+      )
+    },
+    enabled: !!params.start_date && !!params.end_date,
+  })
+}
