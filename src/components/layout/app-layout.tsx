@@ -3,27 +3,26 @@ import { Link, useLocation } from '@tanstack/react-router'
 import {
   LayoutDashboard,
   Wind,
+  Fan,
+  BarChart3,
+  Bell,
+  FileText,
+  Settings,
   ChevronLeft,
   ChevronRight,
   LogOut,
   Moon,
   Sun,
   Zap,
+  TrendingUp,
   MapPin,
-  // Disabled nav icons - uncomment when re-enabling features
-  // Fan,
-  // BarChart3,
-  // Bell,
-  // FileText,
-  // Settings,
-  // TrendingUp,
-  // HelpCircle,
-  // DollarSign,
-  // CloudSun,
-  // AlertTriangle,
-  // Scale,
-  // FolderHeart,
-  // Download,
+  HelpCircle,
+  DollarSign,
+  CloudSun,
+  AlertTriangle,
+  Scale,
+  FolderHeart,
+  Download,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -48,33 +47,32 @@ interface NavItem {
   disabled?: boolean
 }
 
-// Main navigation - Core features (only Dashboard, Wind Farms, Map are active)
+// Main navigation - Core features
 const mainNavItems: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { title: 'Wind Farms', icon: Wind, href: '/wind-farms' },
   { title: 'Map', icon: MapPin, href: '/map' },
-  // Disabled items - will be enabled in future phases
-  // { title: 'Portfolios', icon: FolderHeart, href: '/portfolios', disabled: true },
-  // { title: 'Comparison', icon: Scale, href: '/comparison', disabled: true },
-  // { title: 'Turbines', icon: Fan, href: '/turbines', disabled: true },
+  { title: 'Portfolios', icon: FolderHeart, href: '/portfolios', disabled: true },
+  { title: 'Comparison', icon: Scale, href: '/comparison', disabled: true },
+  { title: 'Turbines', icon: Fan, href: '/turbines', disabled: true },
 ]
 
-// Analytics navigation - Portfolio-level data analysis (disabled for now)
+// Analytics navigation - Portfolio-level data analysis
 const analyticsNavItems: NavItem[] = [
-  // { title: 'Generation', icon: BarChart3, href: '/analytics/generation', disabled: true },
-  // { title: 'Revenue & Pricing', icon: DollarSign, href: '/analytics/revenue', disabled: true },
-  // { title: 'Weather Impact', icon: CloudSun, href: '/analytics/weather', disabled: true },
-  // { title: 'Performance', icon: TrendingUp, href: '/analytics/performance', disabled: true },
+  { title: 'Generation', icon: BarChart3, href: '/analytics/generation', disabled: true },
+  { title: 'Revenue & Pricing', icon: DollarSign, href: '/analytics/revenue', disabled: true },
+  { title: 'Weather Impact', icon: CloudSun, href: '/analytics/weather', disabled: true },
+  { title: 'Performance', icon: TrendingUp, href: '/analytics/performance', disabled: true },
 ]
 
-// System navigation (disabled for now)
+// System navigation
 const systemNavItems: NavItem[] = [
-  // { title: 'Alerts', icon: Bell, href: '/alerts', badge: '3', alert: true, disabled: true },
-  // { title: 'Anomalies', icon: AlertTriangle, href: '/anomalies', disabled: true },
-  // { title: 'Reports', icon: FileText, href: '/reports', disabled: true },
-  // { title: 'Export', icon: Download, href: '/export', disabled: true },
-  // { title: 'Settings', icon: Settings, href: '/settings', disabled: true },
-  // { title: 'Help', icon: HelpCircle, href: '/help', disabled: true },
+  { title: 'Alerts', icon: Bell, href: '/alerts', disabled: true },
+  { title: 'Anomalies', icon: AlertTriangle, href: '/anomalies', disabled: true },
+  { title: 'Reports', icon: FileText, href: '/reports', disabled: true },
+  { title: 'Export', icon: Download, href: '/export', disabled: true },
+  { title: 'Settings', icon: Settings, href: '/settings', disabled: true },
+  { title: 'Help', icon: HelpCircle, href: '/help', disabled: true },
 ]
 
 interface AppLayoutProps {
@@ -291,12 +289,8 @@ export function AppLayout({ children }: AppLayoutProps) {
         <nav className="flex-1 p-3 space-y-6 overflow-y-auto scrollbar-thin">
           <TooltipProvider delayDuration={0}>
             <NavGroup label="Main" items={mainNavItems} showLabel={!collapsed} />
-            {analyticsNavItems.length > 0 && (
-              <NavGroup label="Analytics" items={analyticsNavItems} showLabel={!collapsed} />
-            )}
-            {systemNavItems.length > 0 && (
-              <NavGroup label="System" items={systemNavItems} showLabel={!collapsed} />
-            )}
+            <NavGroup label="Analytics" items={analyticsNavItems} showLabel={!collapsed} />
+            <NavGroup label="System" items={systemNavItems} showLabel={!collapsed} />
           </TooltipProvider>
         </nav>
 
