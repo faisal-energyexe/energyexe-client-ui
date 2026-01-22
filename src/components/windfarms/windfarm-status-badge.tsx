@@ -33,7 +33,9 @@ export function WindfarmStatusBadge({
   status,
   className,
 }: WindfarmStatusBadgeProps) {
-  if (!status) {
+  const config = status ? statusConfig[status] : null
+
+  if (!config) {
     return (
       <Badge
         variant="outline"
@@ -42,12 +44,10 @@ export function WindfarmStatusBadge({
           className,
         )}
       >
-        Unknown
+        {status || 'Unknown'}
       </Badge>
     )
   }
-
-  const config = statusConfig[status]
 
   return (
     <Badge variant="outline" className={cn(config.className, className)}>

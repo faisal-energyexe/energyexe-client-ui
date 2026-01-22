@@ -13,5 +13,9 @@ export const Route = createFileRoute('/_protected/portfolios/$portfolioId')({
 function PortfolioDetailPage() {
   const { portfolioId } = Route.useParams()
 
-  return <PortfolioDetail portfolioId={parseInt(portfolioId, 10)} />
+  return (
+    <div className="p-6 lg:p-8">
+      <PortfolioDetail portfolioId={parseInt(portfolioId, 10)} />
+    </div>
+  )
 }

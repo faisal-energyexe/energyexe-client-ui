@@ -11,5 +11,9 @@ export const Route = createFileRoute('/_protected/portfolios')({
 })
 
 function PortfoliosPage() {
-  return <PortfolioManager />
+  return (
+    <div className="p-6 lg:p-8">
+      <PortfolioManager />
+    </div>
+  )
 }
