@@ -92,19 +92,51 @@ export interface TurbineModel {
   id: number
   model: string
   supplier: string
-  rated_power_kw: number
+  original_supplier?: string
+  rated_power_kw?: number | null
+  rotor_diameter_m?: number | null
+  cut_in_wind_speed_ms?: number | null
+  cut_out_wind_speed_ms?: number | null
+  rated_wind_speed_ms?: number | null
+  blade_length_m?: number | null
+  generator_type?: string | null
+  created_at?: string
+  updated_at?: string
 }
 
 export interface TurbineUnit {
   id: number
   code: string
+  windfarm_id: number
+  turbine_model_id: number
   status: string
   hub_height_m?: number | null
   lat?: number | null
   lng?: number | null
   start_date?: string | null
   end_date?: string | null
+  created_at?: string
+  updated_at?: string
   turbine_model?: TurbineModel | null
+  windfarm?: WindfarmBasic | null
+}
+
+export interface WindfarmBasic {
+  id: number
+  code: string
+  name: string
+  nameplate_capacity_mw?: number | null
+  status?: string | null
+  lat?: number | null
+  lng?: number | null
+}
+
+export interface TurbineUnitStats {
+  total_count: number
+  total_capacity_mw: number
+  avg_hub_height_m: number | null
+  windfarm_count: number
+  status_breakdown: Record<string, number>
 }
 
 export interface GenerationUnit {
