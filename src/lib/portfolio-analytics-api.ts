@@ -218,3 +218,76 @@ export const usePortfolioCaptureRates = (params: PortfolioCaptureRatesParams) =>
     enabled: !!params.start_date && !!params.end_date,
   })
 }
+
+// Types for Portfolio Weather Summary
+export interface PortfolioWeatherSummary {
+  start_date: string
+  end_date: string
+  avg_wind_speed: number
+  min_wind_speed: number
+  max_wind_speed: number
+  avg_temperature: number
+  farm_count: number
+  total_hours: number
+  by_country: PortfolioWeatherByCountry[]
+  correlation_summary: PortfolioWeatherCorrelation[]
+  seasonal_patterns: PortfolioWeatherSeasonal[]
+}
+
+export interface PortfolioWeatherByCountry {
+  country_id: number
+  country_name: string
+  country_code: string
+  avg_wind_speed: number
+  avg_temperature: number
+  farm_count: number
+  data_points: number
+}
+
+export interface PortfolioWeatherCorrelation {
+  windfarm_id: number
+  windfarm_name: string
+  windfarm_code: string
+  country_name: string
+  avg_wind_speed: number
+  avg_generation_mwh: number
+  capacity_factor: number
+  wind_gen_correlation: number | null
+  data_points: number
+}
+
+export interface PortfolioWeatherSeasonal {
+  month: number
+  month_name: string
+  avg_wind_speed: number
+  avg_temperature: number
+  farm_count: number
+  data_points: number
+}
+
+export interface PortfolioWeatherParams {
+  start_date: string
+  end_date: string
+  portfolio_id?: number
+  country_id?: number
+}
+
+export const usePortfolioWeatherSummary = (params: PortfolioWeatherParams) => {
+  return useQuery({
+    queryKey: [...PORTFOLIO_ANALYTICS_KEY, 'weather', params],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams()
+      searchParams.append('start_date', params.start_date)
+      searchParams.append('end_date', params.end_date)
+      if (params.portfolio_id !== undefined)
+        searchParams.append('portfolio_id', params.portfolio_id.toString())
+      if (params.country_id !== undefined)
+        searchParams.append('country_id', params.country_id.toString())
+
+      return await apiClient.get<PortfolioWeatherSummary>(
+        `/weather-data/portfolio/summary?${searchParams.toString()}`,
+      )
+    },
+    enabled: !!params.start_date && !!params.end_date,
+  })
+}
