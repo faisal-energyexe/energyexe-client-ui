@@ -25,12 +25,34 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
   const chartData = useMemo(() => {
     if (!data) return []
 
-    return data.speedBins.map((speed, index) => ({
-      speedBin: `${speed}`,
-      frequency: data.frequencyPercentage[index] || 0,
-      weibullFit: data.weibullFit[index] || 0,
-    }))
+    // Calculate Weibull PDF from the parameters for proper overlay
+    const k = data.weibullK
+    const c = data.weibullC
+
+    return data.speedBins.map((speed, index) => {
+      // Calculate Weibull PDF: f(x) = (k/c) * (x/c)^(k-1) * exp(-(x/c)^k)
+      let weibullPdf = 0
+      if (speed > 0 && k > 0 && c > 0) {
+        const xc = speed / c
+        weibullPdf = (k / c) * Math.pow(xc, k - 1) * Math.exp(-Math.pow(xc, k))
+        // Scale to match percentage histogram (multiply by bin width ~1 and 100 for %)
+        weibullPdf = weibullPdf * 100
+      }
+
+      return {
+        speedBin: `${speed}`,
+        frequency: data.frequencyPercentage[index] || 0,
+        weibullPdf: weibullPdf,
+      }
+    })
   }, [data])
+
+  // Calculate max frequency for better Y-axis scaling
+  const maxFrequency = useMemo(() => {
+    if (!chartData.length) return 20
+    const maxVal = Math.max(...chartData.map(d => Math.max(d.frequency, d.weibullPdf || 0)))
+    return Math.ceil(maxVal * 1.2) // Add 20% headroom
+  }, [chartData])
 
   // Custom tooltip
   const CustomTooltip = ({
@@ -39,7 +61,7 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
     label,
   }: {
     active?: boolean
-    payload?: Array<{ value: number; name: string; color: string }>
+    payload?: Array<{ value: number; name: string; color: string; dataKey: string }>
     label?: string
   }) => {
     if (!active || !payload || payload.length === 0) return null
@@ -56,7 +78,7 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-muted-foreground">
-              {entry.name === 'frequency' ? 'Observed' : 'Weibull Fit'}:
+              {entry.dataKey === 'frequency' ? 'Observed' : 'Weibull Fit'}:
             </span>
             <span className="font-medium text-foreground">
               {entry.value?.toFixed(2)}%
@@ -124,12 +146,12 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="speedBin"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -137,21 +159,22 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
                 value: 'Wind Speed (m/s)',
                 position: 'insideBottom',
                 offset: -5,
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `${value}%`}
+              tickFormatter={(value) => `${value.toFixed(0)}%`}
+              domain={[0, maxFrequency]}
               label={{
                 value: 'Frequency (%)',
                 angle: -90,
                 position: 'insideLeft',
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
@@ -160,24 +183,24 @@ export function WindDistributionChart({ data, isLoading }: WindDistributionChart
               wrapperStyle={{ paddingTop: '10px' }}
               formatter={(value) => (
                 <span className="text-sm text-muted-foreground">
-                  {value === 'frequency' ? 'Observed' : 'Weibull Fit'}
+                  {value === 'frequency' ? 'Observed' : value === 'weibullPdf' ? 'Weibull Fit' : value}
                 </span>
               )}
             />
             <Bar
               dataKey="frequency"
-              fill="hsl(var(--primary))"
+              fill="hsl(221, 83%, 53%)"
               fillOpacity={0.7}
               radius={[2, 2, 0, 0]}
               name="frequency"
             />
             <Line
               type="monotone"
-              dataKey="weibullFit"
+              dataKey="weibullPdf"
               stroke="hsl(0, 85%, 60%)"
               strokeWidth={2}
               dot={false}
-              name="weibullFit"
+              name="weibullPdf"
             />
           </ComposedChart>
         </ResponsiveContainer>

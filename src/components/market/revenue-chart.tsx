@@ -159,18 +159,18 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="period"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}

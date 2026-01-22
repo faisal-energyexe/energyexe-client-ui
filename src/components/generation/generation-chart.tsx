@@ -10,7 +10,7 @@ import {
   Area,
   ComposedChart,
 } from 'recharts'
-import { Download, BarChart3, TrendingUp } from 'lucide-react'
+import { Download, BarChart3, TrendingUp, Activity } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -21,6 +21,8 @@ interface GenerationChartProps {
   isLoading: boolean
   aggregation: 'hourly' | 'daily' | 'monthly'
   onAggregationChange: (agg: 'hourly' | 'daily' | 'monthly') => void
+  nameplateMW?: number
+  showCapacityFactor?: boolean
 }
 
 interface ChartDataPoint {
@@ -28,6 +30,8 @@ interface ChartDataPoint {
   displayLabel: string
   generation: number
   quality: number
+  capacityFactor?: number
+  hours?: number
 }
 
 const aggregationOptions = [
@@ -41,8 +45,11 @@ export function GenerationChart({
   isLoading,
   aggregation,
   onAggregationChange,
+  nameplateMW,
+  showCapacityFactor = true,
 }: GenerationChartProps) {
   const [chartType, setChartType] = useState<'line' | 'area'>('area')
+  const [showCF, setShowCF] = useState(showCapacityFactor && !!nameplateMW)
 
   // Process and aggregate data for chart
   const chartData = useMemo(() => {
@@ -103,16 +110,27 @@ export function GenerationChart({
           break
       }
 
+      // Calculate capacity factor if nameplate capacity is available
+      // CF = (Actual Generation) / (Nameplate Capacity × Hours)
+      let capacityFactor: number | undefined
+      if (nameplateMW && nameplateMW > 0 && value.count > 0) {
+        // value.count represents the number of hours in the period
+        const maxPossibleGeneration = nameplateMW * value.count
+        capacityFactor = (value.total / maxPossibleGeneration) * 100
+      }
+
       result.push({
         timestamp: key,
         displayLabel,
         generation: value.total,
         quality: value.count > 0 ? (value.quality / value.count) * 100 : 0,
+        capacityFactor,
+        hours: value.count,
       })
     })
 
     return result.sort((a, b) => a.timestamp.localeCompare(b.timestamp))
-  }, [data, aggregation])
+  }, [data, aggregation, nameplateMW])
 
   // Format for tooltip
   const formatValue = (value: number) => {
@@ -129,10 +147,30 @@ export function GenerationChart({
     label,
   }: {
     active?: boolean
-    payload?: Array<{ value: number; dataKey: string; color: string }>
+    payload?: Array<{ value: number; dataKey: string; color: string; name: string }>
     label?: string
   }) => {
     if (!active || !payload || payload.length === 0) return null
+
+    const getLabel = (dataKey: string): string => {
+      switch (dataKey) {
+        case 'generation':
+          return 'Generation:'
+        case 'quality':
+          return 'Quality:'
+        case 'capacityFactor':
+          return 'Capacity Factor:'
+        default:
+          return dataKey
+      }
+    }
+
+    const formatTooltipValue = (dataKey: string, value: number): string => {
+      if (dataKey === 'generation') {
+        return formatValue(value)
+      }
+      return `${value.toFixed(1)}%`
+    }
 
     return (
       <div className="bg-card/95 backdrop-blur-sm border border-border/50 rounded-lg p-3 shadow-lg">
@@ -144,12 +182,10 @@ export function GenerationChart({
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-muted-foreground">
-              {entry.dataKey === 'generation' ? 'Generation:' : 'Quality:'}
+              {getLabel(entry.dataKey)}
             </span>
             <span className="font-medium text-foreground">
-              {entry.dataKey === 'generation'
-                ? formatValue(entry.value)
-                : `${entry.value.toFixed(1)}%`}
+              {formatTooltipValue(entry.dataKey, entry.value)}
             </span>
           </div>
         ))}
@@ -209,6 +245,22 @@ export function GenerationChart({
               ))}
             </div>
 
+            {/* Capacity factor toggle */}
+            {nameplateMW && nameplateMW > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className={`bg-card/50 border-border/50 gap-1.5 ${
+                  showCF ? 'text-amber-500 border-amber-500/50' : ''
+                }`}
+                onClick={() => setShowCF(!showCF)}
+                title="Toggle Capacity Factor overlay"
+              >
+                <Activity className="h-4 w-4" />
+                CF
+              </Button>
+            )}
+
             {/* Chart type toggle */}
             <Button
               variant="outline"
@@ -246,25 +298,25 @@ export function GenerationChart({
             >
               <defs>
                 <linearGradient id="generationGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  <stop offset="5%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="hsl(var(--border))"
+                stroke="hsl(215, 20%, 40%)"
                 opacity={0.3}
               />
               <XAxis
                 dataKey="displayLabel"
-                stroke="hsl(var(--muted-foreground))"
+                stroke="hsl(215, 20%, 65%)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
                 yAxisId="left"
-                stroke="hsl(var(--muted-foreground))"
+                stroke="hsl(215, 20%, 65%)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
@@ -275,7 +327,7 @@ export function GenerationChart({
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke="hsl(var(--muted-foreground))"
+                stroke="hsl(215, 20%, 65%)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
@@ -289,7 +341,7 @@ export function GenerationChart({
                   yAxisId="left"
                   type="monotone"
                   dataKey="generation"
-                  stroke="hsl(var(--primary))"
+                  stroke="hsl(221, 83%, 53%)"
                   strokeWidth={2}
                   fill="url(#generationGradient)"
                   name="Generation (MWh)"
@@ -299,7 +351,7 @@ export function GenerationChart({
                   yAxisId="left"
                   type="monotone"
                   dataKey="generation"
-                  stroke="hsl(var(--primary))"
+                  stroke="hsl(221, 83%, 53%)"
                   strokeWidth={2}
                   dot={false}
                   name="Generation (MWh)"
@@ -315,6 +367,17 @@ export function GenerationChart({
                 dot={false}
                 name="Quality Score (%)"
               />
+              {showCF && nameplateMW && (
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="capacityFactor"
+                  stroke="hsl(45, 93%, 47%)"
+                  strokeWidth={2}
+                  dot={false}
+                  name="Capacity Factor (%)"
+                />
+              )}
             </ComposedChart>
           </ResponsiveContainer>
         )}

@@ -1,6 +1,126 @@
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from './api'
 
+// ============================================================================
+// SINGLE WINDFARM GENERATION DATA (using comparison API endpoints)
+// ============================================================================
+
+export interface SingleWindfarmGenerationPoint {
+  period: string
+  total_generation: number
+  avg_generation: number
+  max_generation: number
+  min_generation: number
+  avg_capacity_factor: number | null
+  data_points: number
+}
+
+export interface SingleWindfarmGenerationResponse {
+  data: SingleWindfarmGenerationPoint[]
+  summary: {
+    total_generation: number
+    avg_capacity_factor: number
+    total_records: number
+    date_range: {
+      start: string
+      end: string
+    }
+  }
+}
+
+export interface SingleWindfarmStats {
+  windfarm_id: number
+  windfarm_name: string
+  capacity_mw: number | null
+  total_generation: number
+  peak_generation: number
+  min_generation: number
+  avg_generation: number
+  stddev_generation: number
+  avg_capacity_factor: number
+  max_capacity_factor: number
+  min_capacity_factor: number
+  data_points: number
+  period_days: number
+  availability_percent: number
+  data_completeness: number
+}
+
+/**
+ * Fetch generation time series data for a single windfarm using the comparison API
+ */
+export async function getSingleWindfarmGeneration(
+  windfarmId: number,
+  startDate: string,
+  endDate: string,
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily'
+): Promise<SingleWindfarmGenerationResponse> {
+  const params = new URLSearchParams()
+  params.append('windfarm_ids', windfarmId.toString())
+  params.append('start_date', startDate)
+  params.append('end_date', endDate)
+  params.append('granularity', granularity)
+
+  const url = `/comparison/compare?${params.toString()}`
+  console.log('[Generation API] Fetching:', url)
+
+  const response = await apiClient.get<SingleWindfarmGenerationResponse>(url)
+  console.log('[Generation API] Response:', response?.data?.length, 'data points')
+  return response
+}
+
+/**
+ * Fetch statistics for a single windfarm using the comparison API
+ */
+export async function getSingleWindfarmStats(
+  windfarmId: number,
+  periodDays: number = 30
+): Promise<SingleWindfarmStats | null> {
+  const params = new URLSearchParams()
+  params.append('windfarm_ids', windfarmId.toString())
+  params.append('period_days', periodDays.toString())
+
+  const url = `/comparison/statistics?${params.toString()}`
+  console.log('[Stats API] Fetching:', url)
+
+  const response = await apiClient.get<SingleWindfarmStats[]>(url)
+  console.log('[Stats API] Response:', response?.length, 'items')
+  return response.length > 0 ? response[0] : null
+}
+
+/**
+ * Hook to fetch single windfarm generation time series
+ */
+export function useSingleWindfarmGeneration(
+  windfarmId: number | null,
+  startDate: string | null,
+  endDate: string | null,
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily'
+) {
+  return useQuery({
+    queryKey: ['single-windfarm-generation', windfarmId, startDate, endDate, granularity],
+    queryFn: () => getSingleWindfarmGeneration(windfarmId!, startDate!, endDate!, granularity),
+    enabled: !!windfarmId && !!startDate && !!endDate,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+}
+
+/**
+ * Hook to fetch single windfarm statistics
+ */
+export function useSingleWindfarmStats(windfarmId: number | null, periodDays: number = 30) {
+  return useQuery({
+    queryKey: ['single-windfarm-stats', windfarmId, periodDays],
+    queryFn: () => getSingleWindfarmStats(windfarmId!, periodDays),
+    enabled: !!windfarmId,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+// ============================================================================
+// LEGACY TYPES (for backward compatibility)
+// ============================================================================
+
 // Types for generation data
 export interface GenerationHourlyData {
   hour: string
@@ -246,6 +366,9 @@ export function getDateRangePreset(preset: string): { startDate: string; endDate
     case '1Y':
       startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
       break
+    case 'ALL':
+      startDate = '2010-01-01'
+      break
     default:
       startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   }
@@ -264,8 +387,8 @@ export function formatGeneration(mwh: number): string {
   }
 }
 
-// Utility function to format capacity factor
-export function formatCapacityFactor(percent: number | null): string {
-  if (percent === null) return 'N/A'
-  return `${percent.toFixed(1)}%`
+// Utility function to format capacity factor (input is decimal, e.g., 0.45 = 45%)
+export function formatCapacityFactor(decimal: number | null): string {
+  if (decimal === null) return 'N/A'
+  return `${(decimal * 100).toFixed(1)}%`
 }

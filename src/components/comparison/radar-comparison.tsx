@@ -121,21 +121,21 @@ export function RadarComparison({ selectedIds, periodDays = 30 }: RadarCompariso
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-                <PolarGrid stroke="hsl(var(--border))" />
+                <PolarGrid stroke="hsl(215, 20%, 40%)" />
                 <PolarAngleAxis
                   dataKey="metric"
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
                 />
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-                  axisLine={{ stroke: 'hsl(var(--border))' }}
+                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 10 }}
+                  axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
+                    backgroundColor: 'hsl(222, 47%, 11%)',
+                    border: '1px solid hsl(215, 20%, 40%)',
                     borderRadius: '8px',
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                   }}

@@ -16,6 +16,7 @@ import { CaptureRateChart } from './capture-rate-chart'
 import { RevenueChart } from './revenue-chart'
 import { CorrelationCard } from './correlation-card'
 import { PriceProfileChart } from './price-profile-chart'
+import { NegativePriceSummary } from './negative-price-summary'
 import {
   Select,
   SelectContent,
@@ -130,6 +131,13 @@ export function MarketTab({ windfarmId, bidzoneId }: MarketTabProps) {
         statistics={statistics}
         captureRate={captureRate?.overall}
         isLoading={isLoadingStats || isLoadingCaptureRate}
+      />
+
+      {/* Price Volatility & Risk Summary */}
+      <NegativePriceSummary
+        statistics={statistics}
+        priceProfile={priceProfile}
+        isLoading={isLoadingStats || isLoadingProfile}
       />
 
       {/* Capture Rate and Revenue Charts */}

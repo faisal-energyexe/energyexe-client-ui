@@ -23,6 +23,7 @@ const presets = [
   { value: '90D', label: '90 Days' },
   { value: 'YTD', label: 'Year to Date' },
   { value: '1Y', label: '1 Year' },
+  { value: 'ALL', label: 'All Time' },
   { value: 'custom', label: 'Custom' },
 ]
 

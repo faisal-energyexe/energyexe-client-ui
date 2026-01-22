@@ -255,39 +255,39 @@ export function PortfolioWeatherPage() {
                       <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" />
                   <XAxis
                     dataKey="month"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                   />
                   <YAxis
                     yAxisId="wind"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     label={{
                       value: 'm/s',
                       angle: -90,
                       position: 'insideLeft',
-                      style: { fill: 'hsl(var(--muted-foreground))' },
+                      style: { fill: 'hsl(215, 20%, 65%)' },
                     }}
                   />
                   <YAxis
                     yAxisId="temp"
                     orientation="right"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     label={{
                       value: '°C',
                       angle: 90,
                       position: 'insideRight',
-                      style: { fill: 'hsl(var(--muted-foreground))' },
+                      style: { fill: 'hsl(215, 20%, 65%)' },
                     }}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
+                      backgroundColor: 'hsl(222, 47%, 11%)',
+                      border: '1px solid hsl(215, 20%, 40%)',
                       borderRadius: '8px',
                     }}
                     formatter={(value, name) => {
@@ -340,29 +340,29 @@ export function PortfolioWeatherPage() {
             ) : (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={countryChartData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" />
                   <XAxis
                     type="number"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     label={{
                       value: 'Wind Speed (m/s)',
                       position: 'insideBottom',
                       offset: -5,
-                      style: { fill: 'hsl(var(--muted-foreground))' },
+                      style: { fill: 'hsl(215, 20%, 65%)' },
                     }}
                   />
                   <YAxis
                     dataKey="name"
                     type="category"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     width={100}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
+                      backgroundColor: 'hsl(222, 47%, 11%)',
+                      border: '1px solid hsl(215, 20%, 40%)',
                       borderRadius: '8px',
                     }}
                     formatter={(value) => [`${value} m/s`, 'Avg Wind Speed']}

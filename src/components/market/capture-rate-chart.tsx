@@ -158,19 +158,19 @@ export function CaptureRateChart({ data, isLoading }: CaptureRateChartProps) {
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="period"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
               yAxisId="left"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -180,7 +180,7 @@ export function CaptureRateChart({ data, isLoading }: CaptureRateChartProps) {
             <YAxis
               yAxisId="right"
               orientation="right"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -195,12 +195,12 @@ export function CaptureRateChart({ data, isLoading }: CaptureRateChartProps) {
             <ReferenceLine
               yAxisId="left"
               y={100}
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               strokeDasharray="5 5"
               strokeOpacity={0.5}
               label={{
                 value: 'Market Rate',
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 10,
               }}
             />
@@ -209,7 +209,7 @@ export function CaptureRateChart({ data, isLoading }: CaptureRateChartProps) {
             <Bar
               yAxisId="left"
               dataKey="captureRate"
-              fill="hsl(var(--primary))"
+              fill="hsl(221, 83%, 53%)"
               fillOpacity={0.7}
               radius={[4, 4, 0, 0]}
               name="Capture Rate (%)"

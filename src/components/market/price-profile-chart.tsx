@@ -189,18 +189,18 @@ export function PriceProfileChart({ data, isLoading, aggregation }: PriceProfile
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="label"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -211,12 +211,12 @@ export function PriceProfileChart({ data, isLoading, aggregation }: PriceProfile
             {/* Average reference line */}
             <ReferenceLine
               y={averagePrice}
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               strokeDasharray="5 5"
               strokeOpacity={0.5}
               label={{
                 value: `Avg: ${formatPrice(averagePrice, 'EUR')}`,
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 10,
                 position: 'right',
               }}
@@ -225,7 +225,7 @@ export function PriceProfileChart({ data, isLoading, aggregation }: PriceProfile
             {/* Price bars */}
             <Bar
               dataKey="avgPrice"
-              fill="hsl(var(--primary))"
+              fill="hsl(221, 83%, 53%)"
               fillOpacity={0.7}
               radius={[4, 4, 0, 0]}
               name="Average Price"

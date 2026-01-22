@@ -180,19 +180,19 @@ export function ComparisonChart({ selectedIds, startDate, endDate }: ComparisonC
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" opacity={0.3} />
                 <XAxis
                   dataKey="period"
                   tickFormatter={formatXAxis}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                  tickLine={{ stroke: 'hsl(var(--border))' }}
-                  axisLine={{ stroke: 'hsl(var(--border))' }}
+                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                  tickLine={{ stroke: 'hsl(215, 20%, 40%)' }}
+                  axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                   interval="preserveStartEnd"
                 />
                 <YAxis
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                  tickLine={{ stroke: 'hsl(var(--border))' }}
-                  axisLine={{ stroke: 'hsl(var(--border))' }}
+                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                  tickLine={{ stroke: 'hsl(215, 20%, 40%)' }}
+                  axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                   tickFormatter={(v) =>
                     metricType === 'generation'
                       ? v >= 1000
@@ -204,17 +204,17 @@ export function ComparisonChart({ selectedIds, startDate, endDate }: ComparisonC
                     value: metricType === 'generation' ? 'Generation (MWh)' : 'Capacity Factor (%)',
                     angle: -90,
                     position: 'insideLeft',
-                    style: { fill: 'hsl(var(--muted-foreground))' },
+                    style: { fill: 'hsl(215, 20%, 65%)' },
                   }}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
+                    backgroundColor: 'hsl(222, 47%, 11%)',
+                    border: '1px solid hsl(215, 20%, 40%)',
                     borderRadius: '8px',
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                   }}
-                  labelStyle={{ color: 'hsl(var(--foreground))' }}
+                  labelStyle={{ color: 'hsl(210, 40%, 98%)' }}
                   formatter={(value, name) => {
                     const numValue = typeof value === 'number' ? value : null
                     const strName = String(name)

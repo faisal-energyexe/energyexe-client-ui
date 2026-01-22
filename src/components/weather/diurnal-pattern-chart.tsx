@@ -139,25 +139,25 @@ export function DiurnalPatternChart({ data, isLoading }: DiurnalPatternChartProp
           >
             <defs>
               <linearGradient id="diurnalGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                <stop offset="5%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="hourLabel"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
               interval={2}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -166,7 +166,7 @@ export function DiurnalPatternChart({ data, isLoading }: DiurnalPatternChartProp
                 value: 'Wind Speed (m/s)',
                 angle: -90,
                 position: 'insideLeft',
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
@@ -188,7 +188,7 @@ export function DiurnalPatternChart({ data, isLoading }: DiurnalPatternChartProp
             <Line
               type="monotone"
               dataKey="avgSpeed"
-              stroke="hsl(var(--primary))"
+              stroke="hsl(221, 83%, 53%)"
               strokeWidth={2}
               dot={false}
               name="Average"

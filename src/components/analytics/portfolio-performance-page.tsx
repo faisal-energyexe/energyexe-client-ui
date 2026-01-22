@@ -226,29 +226,29 @@ export function PortfolioPerformancePage() {
             ) : (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={performanceData.cf_distribution}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" />
                   <XAxis
                     dataKey="bin_label"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 11 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     angle={-45}
                     textAnchor="end"
                     height={60}
                   />
                   <YAxis
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     label={{
                       value: 'Farms',
                       angle: -90,
                       position: 'insideLeft',
-                      style: { fill: 'hsl(var(--muted-foreground))' },
+                      style: { fill: 'hsl(215, 20%, 65%)' },
                     }}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
+                      backgroundColor: 'hsl(222, 47%, 11%)',
+                      border: '1px solid hsl(215, 20%, 40%)',
                       borderRadius: '8px',
                     }}
                     formatter={(value) => [`${value} farms`, 'Count']}
@@ -292,11 +292,11 @@ export function PortfolioPerformancePage() {
                       <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" />
                   <XAxis
                     dataKey="period"
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     tickFormatter={(value) => {
                       const date = new Date(value)
                       return date.toLocaleDateString('en-US', {
@@ -306,19 +306,19 @@ export function PortfolioPerformancePage() {
                     }}
                   />
                   <YAxis
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    axisLine={{ stroke: 'hsl(var(--border))' }}
+                    tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
+                    axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
                     label={{
                       value: 'CF %',
                       angle: -90,
                       position: 'insideLeft',
-                      style: { fill: 'hsl(var(--muted-foreground))' },
+                      style: { fill: 'hsl(215, 20%, 65%)' },
                     }}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
+                      backgroundColor: 'hsl(222, 47%, 11%)',
+                      border: '1px solid hsl(215, 20%, 40%)',
                       borderRadius: '8px',
                     }}
                     formatter={(value) => [`${Number(value).toFixed(1)}%`, 'Capacity Factor']}

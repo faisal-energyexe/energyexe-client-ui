@@ -142,18 +142,18 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
           >
             <defs>
               <linearGradient id="powerCurveGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                <stop offset="5%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="hsl(221, 83%, 53%)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="windSpeed"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -161,12 +161,12 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
                 value: 'Wind Speed (m/s)',
                 position: 'insideBottom',
                 offset: -5,
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -174,7 +174,7 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
                 value: 'Generation (MW)',
                 angle: -90,
                 position: 'insideLeft',
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
@@ -196,9 +196,9 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
             <Line
               type="monotone"
               dataKey="generation"
-              stroke="hsl(var(--primary))"
+              stroke="hsl(221, 83%, 53%)"
               strokeWidth={2}
-              dot={{ fill: 'hsl(var(--primary))', r: 3 }}
+              dot={{ fill: 'hsl(221, 83%, 53%)', r: 3 }}
               name="Power Output"
             />
 
@@ -210,7 +210,7 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
                 strokeDasharray="3 3"
                 label={{
                   value: `Cut-in: ${data.cutInSpeed}m/s`,
-                  fill: 'hsl(var(--muted-foreground))',
+                  fill: 'hsl(215, 20%, 65%)',
                   fontSize: 10,
                   position: 'top',
                 }}
@@ -223,7 +223,7 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
                 strokeDasharray="3 3"
                 label={{
                   value: `Rated: ${data.ratedSpeed}m/s`,
-                  fill: 'hsl(var(--muted-foreground))',
+                  fill: 'hsl(215, 20%, 65%)',
                   fontSize: 10,
                   position: 'top',
                 }}
@@ -236,7 +236,7 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
                 strokeDasharray="3 3"
                 label={{
                   value: `Cut-out: ${data.cutOutSpeed}m/s`,
-                  fill: 'hsl(var(--muted-foreground))',
+                  fill: 'hsl(215, 20%, 65%)',
                   fontSize: 10,
                   position: 'top',
                 }}
@@ -247,7 +247,7 @@ export function PowerCurveChart({ data, isLoading, nameplateMW }: PowerCurveChar
             {data.ratedPower && (
               <ReferenceLine
                 y={data.ratedPower}
-                stroke="hsl(var(--muted-foreground))"
+                stroke="hsl(215, 20%, 65%)"
                 strokeDasharray="5 5"
                 strokeOpacity={0.5}
               />

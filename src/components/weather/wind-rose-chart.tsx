@@ -138,17 +138,17 @@ export function WindRoseChart({ data, isLoading }: WindRoseChartProps) {
         <ResponsiveContainer width="100%" height={350}>
           <RadarChart data={chartData} outerRadius="80%">
             <PolarGrid
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               strokeOpacity={0.5}
             />
             <PolarAngleAxis
               dataKey="direction"
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+              tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
             />
             <PolarRadiusAxis
               angle={90}
               domain={[0, 'auto']}
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+              tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 10 }}
               tickFormatter={(value) => `${value}%`}
             />
             {data.speedBins.map((speedBin, index) => (
@@ -166,7 +166,7 @@ export function WindRoseChart({ data, isLoading }: WindRoseChartProps) {
             <Legend
               wrapperStyle={{ paddingTop: '20px' }}
               formatter={(value) => (
-                <span className="text-sm text-muted-foreground">{value} m/s</span>
+                <span className="text-sm text-muted-foreground">{value}</span>
               )}
             />
           </RadarChart>

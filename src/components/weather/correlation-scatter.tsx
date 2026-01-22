@@ -152,12 +152,12 @@ export function CorrelationScatter({ data, isLoading }: CorrelationScatterProps)
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="hsl(215, 20%, 40%)"
               opacity={0.3}
             />
             <XAxis
               dataKey="windSpeed"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -165,12 +165,12 @@ export function CorrelationScatter({ data, isLoading }: CorrelationScatterProps)
                 value: 'Wind Speed (m/s)',
                 position: 'insideBottom',
                 offset: -5,
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="hsl(215, 20%, 65%)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -178,7 +178,7 @@ export function CorrelationScatter({ data, isLoading }: CorrelationScatterProps)
                 value: 'Generation (MW)',
                 angle: -90,
                 position: 'insideLeft',
-                fill: 'hsl(var(--muted-foreground))',
+                fill: 'hsl(215, 20%, 65%)',
                 fontSize: 12,
               }}
             />
@@ -194,14 +194,14 @@ export function CorrelationScatter({ data, isLoading }: CorrelationScatterProps)
             {/* Scatter points for binned averages */}
             <Scatter
               dataKey="avgGeneration"
-              fill="hsl(var(--primary))"
+              fill="hsl(221, 83%, 53%)"
               name="avgGeneration"
             />
             {/* Line connecting the points */}
             <Line
               type="monotone"
               dataKey="avgGeneration"
-              stroke="hsl(var(--primary))"
+              stroke="hsl(221, 83%, 53%)"
               strokeWidth={2}
               dot={false}
               name="Trend"

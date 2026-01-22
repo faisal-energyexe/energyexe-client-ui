@@ -18,11 +18,9 @@ function WindfarmReportPage() {
   const { data: windfarm } = useWindfarmWithOwners(windfarmIdNum)
 
   return (
-    <div className="p-6 lg:p-8">
-      <ReportPage
-        windfarmId={windfarmIdNum}
-        windfarmName={windfarm?.name || 'Wind Farm'}
-      />
-    </div>
+    <ReportPage
+      windfarmId={windfarmIdNum}
+      windfarmName={windfarm?.name || 'Wind Farm'}
+    />
   )
 }
