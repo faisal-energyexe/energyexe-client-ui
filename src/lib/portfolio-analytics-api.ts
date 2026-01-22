@@ -102,3 +102,119 @@ export const usePortfolioGenerationTimeseries = (
     enabled: !!params.start_date && !!params.end_date,
   })
 }
+
+// Types for Portfolio Revenue
+export interface PortfolioRevenueData {
+  start_date: string
+  end_date: string
+  aggregation: string
+  total_revenue_eur: number
+  total_generation_mwh: number
+  avg_achieved_price: number
+  avg_market_price: number
+  avg_capture_rate: number
+  farm_count: number
+  by_farm: PortfolioFarmRevenue[]
+  by_period: PortfolioRevenuePeriod[]
+}
+
+export interface PortfolioFarmRevenue {
+  windfarm_id: number
+  name: string
+  total_generation_mwh: number
+  total_revenue_eur: number
+  achieved_price: number
+  capture_rate: number
+}
+
+export interface PortfolioRevenuePeriod {
+  period: string
+  total_generation_mwh: number
+  total_revenue_eur: number
+  avg_price: number
+  achieved_price: number
+  farm_count: number
+}
+
+export interface PortfolioRevenueParams {
+  start_date: string
+  end_date: string
+  portfolio_id?: number
+  country_id?: number
+  aggregation?: 'day' | 'week' | 'month'
+}
+
+export const usePortfolioRevenue = (params: PortfolioRevenueParams) => {
+  return useQuery({
+    queryKey: [...PORTFOLIO_ANALYTICS_KEY, 'revenue', params],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams()
+      searchParams.append('start_date', params.start_date)
+      searchParams.append('end_date', params.end_date)
+      if (params.aggregation)
+        searchParams.append('aggregation', params.aggregation)
+      if (params.portfolio_id !== undefined)
+        searchParams.append('portfolio_id', params.portfolio_id.toString())
+      if (params.country_id !== undefined)
+        searchParams.append('country_id', params.country_id.toString())
+
+      return await apiClient.get<PortfolioRevenueData>(
+        `/prices/analytics/portfolio/revenue?${searchParams.toString()}`,
+      )
+    },
+    enabled: !!params.start_date && !!params.end_date,
+  })
+}
+
+// Types for Portfolio Capture Rates
+export interface PortfolioCaptureRatesData {
+  start_date: string
+  end_date: string
+  market_average_price: number
+  farm_count: number
+  statistics: {
+    avg_capture_rate: number
+    max_capture_rate: number
+    min_capture_rate: number
+  }
+  farms: PortfolioFarmCaptureRate[]
+}
+
+export interface PortfolioFarmCaptureRate {
+  windfarm_id: number
+  name: string
+  bidzone_code: string | null
+  total_generation_mwh: number
+  total_revenue_eur: number
+  achieved_price: number
+  capture_rate: number
+}
+
+export interface PortfolioCaptureRatesParams {
+  start_date: string
+  end_date: string
+  portfolio_id?: number
+  country_id?: number
+  sort_by?: 'capture_rate' | 'revenue' | 'generation'
+}
+
+export const usePortfolioCaptureRates = (params: PortfolioCaptureRatesParams) => {
+  return useQuery({
+    queryKey: [...PORTFOLIO_ANALYTICS_KEY, 'capture-rates', params],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams()
+      searchParams.append('start_date', params.start_date)
+      searchParams.append('end_date', params.end_date)
+      if (params.sort_by) searchParams.append('sort_by', params.sort_by)
+      if (params.portfolio_id !== undefined)
+        searchParams.append('portfolio_id', params.portfolio_id.toString())
+      if (params.country_id !== undefined)
+        searchParams.append('country_id', params.country_id.toString())
+
+      return await apiClient.get<PortfolioCaptureRatesData>(
+        `/prices/analytics/portfolio/capture-rates?${searchParams.toString()}`,
+      )
+    },
+    enabled: !!params.start_date && !!params.end_date,
+  })
+}
