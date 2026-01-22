@@ -20,15 +20,24 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InvitationTokenRouteImport } from './routes/invitation.$token'
 import { Route as DemoWindfarmRouteImport } from './routes/demo/windfarm'
+import { Route as ProtectedTurbinesRouteImport } from './routes/_protected.turbines'
+import { Route as ProtectedSettingsRouteImport } from './routes/_protected.settings'
+import { Route as ProtectedReportsRouteImport } from './routes/_protected.reports'
 import { Route as ProtectedPortfoliosRouteImport } from './routes/_protected.portfolios'
 import { Route as ProtectedMapRouteImport } from './routes/_protected.map'
+import { Route as ProtectedHelpRouteImport } from './routes/_protected.help'
 import { Route as ProtectedExportRouteImport } from './routes/_protected.export'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
 import { Route as ProtectedComparisonRouteImport } from './routes/_protected.comparison'
+import { Route as ProtectedAnomaliesRouteImport } from './routes/_protected.anomalies'
 import { Route as ProtectedAlertsRouteImport } from './routes/_protected.alerts'
 import { Route as ProtectedWindFarmsIndexRouteImport } from './routes/_protected.wind-farms.index'
 import { Route as ProtectedWindFarmsWindfarmIdRouteImport } from './routes/_protected.wind-farms.$windfarmId'
 import { Route as ProtectedPortfoliosPortfolioIdRouteImport } from './routes/_protected.portfolios.$portfolioId'
+import { Route as ProtectedAnalyticsWeatherRouteImport } from './routes/_protected.analytics.weather'
+import { Route as ProtectedAnalyticsRevenueRouteImport } from './routes/_protected.analytics.revenue'
+import { Route as ProtectedAnalyticsPerformanceRouteImport } from './routes/_protected.analytics.performance'
+import { Route as ProtectedAnalyticsGenerationRouteImport } from './routes/_protected.analytics.generation'
 import { Route as ProtectedWindFarmsWindfarmIdWeatherRouteImport } from './routes/_protected.wind-farms.$windfarmId.weather'
 import { Route as ProtectedWindFarmsWindfarmIdReportRouteImport } from './routes/_protected.wind-farms.$windfarmId.report'
 import { Route as ProtectedWindFarmsWindfarmIdMarketRouteImport } from './routes/_protected.wind-farms.$windfarmId.market'
@@ -88,6 +97,21 @@ const DemoWindfarmRoute = DemoWindfarmRouteImport.update({
   path: '/windfarm',
   getParentRoute: () => DemoRoute,
 } as any)
+const ProtectedTurbinesRoute = ProtectedTurbinesRouteImport.update({
+  id: '/turbines',
+  path: '/turbines',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedSettingsRoute = ProtectedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedReportsRoute = ProtectedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedPortfoliosRoute = ProtectedPortfoliosRouteImport.update({
   id: '/portfolios',
   path: '/portfolios',
@@ -96,6 +120,11 @@ const ProtectedPortfoliosRoute = ProtectedPortfoliosRouteImport.update({
 const ProtectedMapRoute = ProtectedMapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedHelpRoute = ProtectedHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedExportRoute = ProtectedExportRouteImport.update({
@@ -111,6 +140,11 @@ const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
 const ProtectedComparisonRoute = ProtectedComparisonRouteImport.update({
   id: '/comparison',
   path: '/comparison',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedAnomaliesRoute = ProtectedAnomaliesRouteImport.update({
+  id: '/anomalies',
+  path: '/anomalies',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedAlertsRoute = ProtectedAlertsRouteImport.update({
@@ -134,6 +168,30 @@ const ProtectedPortfoliosPortfolioIdRoute =
     id: '/$portfolioId',
     path: '/$portfolioId',
     getParentRoute: () => ProtectedPortfoliosRoute,
+  } as any)
+const ProtectedAnalyticsWeatherRoute =
+  ProtectedAnalyticsWeatherRouteImport.update({
+    id: '/analytics/weather',
+    path: '/analytics/weather',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedAnalyticsRevenueRoute =
+  ProtectedAnalyticsRevenueRouteImport.update({
+    id: '/analytics/revenue',
+    path: '/analytics/revenue',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedAnalyticsPerformanceRoute =
+  ProtectedAnalyticsPerformanceRouteImport.update({
+    id: '/analytics/performance',
+    path: '/analytics/performance',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedAnalyticsGenerationRoute =
+  ProtectedAnalyticsGenerationRouteImport.update({
+    id: '/analytics/generation',
+    path: '/analytics/generation',
+    getParentRoute: () => ProtectedRoute,
   } as any)
 const ProtectedWindFarmsWindfarmIdWeatherRoute =
   ProtectedWindFarmsWindfarmIdWeatherRouteImport.update({
@@ -170,13 +228,22 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/alerts': typeof ProtectedAlertsRoute
+  '/anomalies': typeof ProtectedAnomaliesRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/export': typeof ProtectedExportRoute
+  '/help': typeof ProtectedHelpRoute
   '/map': typeof ProtectedMapRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
+  '/reports': typeof ProtectedReportsRoute
+  '/settings': typeof ProtectedSettingsRoute
+  '/turbines': typeof ProtectedTurbinesRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
+  '/analytics/generation': typeof ProtectedAnalyticsGenerationRoute
+  '/analytics/performance': typeof ProtectedAnalyticsPerformanceRoute
+  '/analytics/revenue': typeof ProtectedAnalyticsRevenueRoute
+  '/analytics/weather': typeof ProtectedAnalyticsWeatherRoute
   '/portfolios/$portfolioId': typeof ProtectedPortfoliosPortfolioIdRoute
   '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms/': typeof ProtectedWindFarmsIndexRoute
@@ -195,13 +262,22 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/alerts': typeof ProtectedAlertsRoute
+  '/anomalies': typeof ProtectedAnomaliesRoute
   '/comparison': typeof ProtectedComparisonRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/export': typeof ProtectedExportRoute
+  '/help': typeof ProtectedHelpRoute
   '/map': typeof ProtectedMapRoute
   '/portfolios': typeof ProtectedPortfoliosRouteWithChildren
+  '/reports': typeof ProtectedReportsRoute
+  '/settings': typeof ProtectedSettingsRoute
+  '/turbines': typeof ProtectedTurbinesRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
+  '/analytics/generation': typeof ProtectedAnalyticsGenerationRoute
+  '/analytics/performance': typeof ProtectedAnalyticsPerformanceRoute
+  '/analytics/revenue': typeof ProtectedAnalyticsRevenueRoute
+  '/analytics/weather': typeof ProtectedAnalyticsWeatherRoute
   '/portfolios/$portfolioId': typeof ProtectedPortfoliosPortfolioIdRoute
   '/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/wind-farms': typeof ProtectedWindFarmsIndexRoute
@@ -222,13 +298,22 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/_protected/alerts': typeof ProtectedAlertsRoute
+  '/_protected/anomalies': typeof ProtectedAnomaliesRoute
   '/_protected/comparison': typeof ProtectedComparisonRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/export': typeof ProtectedExportRoute
+  '/_protected/help': typeof ProtectedHelpRoute
   '/_protected/map': typeof ProtectedMapRoute
   '/_protected/portfolios': typeof ProtectedPortfoliosRouteWithChildren
+  '/_protected/reports': typeof ProtectedReportsRoute
+  '/_protected/settings': typeof ProtectedSettingsRoute
+  '/_protected/turbines': typeof ProtectedTurbinesRoute
   '/demo/windfarm': typeof DemoWindfarmRoute
   '/invitation/$token': typeof InvitationTokenRoute
+  '/_protected/analytics/generation': typeof ProtectedAnalyticsGenerationRoute
+  '/_protected/analytics/performance': typeof ProtectedAnalyticsPerformanceRoute
+  '/_protected/analytics/revenue': typeof ProtectedAnalyticsRevenueRoute
+  '/_protected/analytics/weather': typeof ProtectedAnalyticsWeatherRoute
   '/_protected/portfolios/$portfolioId': typeof ProtectedPortfoliosPortfolioIdRoute
   '/_protected/wind-farms/$windfarmId': typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   '/_protected/wind-farms/': typeof ProtectedWindFarmsIndexRoute
@@ -249,13 +334,22 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/alerts'
+    | '/anomalies'
     | '/comparison'
     | '/dashboard'
     | '/export'
+    | '/help'
     | '/map'
     | '/portfolios'
+    | '/reports'
+    | '/settings'
+    | '/turbines'
     | '/demo/windfarm'
     | '/invitation/$token'
+    | '/analytics/generation'
+    | '/analytics/performance'
+    | '/analytics/revenue'
+    | '/analytics/weather'
     | '/portfolios/$portfolioId'
     | '/wind-farms/$windfarmId'
     | '/wind-farms/'
@@ -274,13 +368,22 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/alerts'
+    | '/anomalies'
     | '/comparison'
     | '/dashboard'
     | '/export'
+    | '/help'
     | '/map'
     | '/portfolios'
+    | '/reports'
+    | '/settings'
+    | '/turbines'
     | '/demo/windfarm'
     | '/invitation/$token'
+    | '/analytics/generation'
+    | '/analytics/performance'
+    | '/analytics/revenue'
+    | '/analytics/weather'
     | '/portfolios/$portfolioId'
     | '/wind-farms/$windfarmId'
     | '/wind-farms'
@@ -300,13 +403,22 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/_protected/alerts'
+    | '/_protected/anomalies'
     | '/_protected/comparison'
     | '/_protected/dashboard'
     | '/_protected/export'
+    | '/_protected/help'
     | '/_protected/map'
     | '/_protected/portfolios'
+    | '/_protected/reports'
+    | '/_protected/settings'
+    | '/_protected/turbines'
     | '/demo/windfarm'
     | '/invitation/$token'
+    | '/_protected/analytics/generation'
+    | '/_protected/analytics/performance'
+    | '/_protected/analytics/revenue'
+    | '/_protected/analytics/weather'
     | '/_protected/portfolios/$portfolioId'
     | '/_protected/wind-farms/$windfarmId'
     | '/_protected/wind-farms/'
@@ -408,6 +520,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoWindfarmRouteImport
       parentRoute: typeof DemoRoute
     }
+    '/_protected/turbines': {
+      id: '/_protected/turbines'
+      path: '/turbines'
+      fullPath: '/turbines'
+      preLoaderRoute: typeof ProtectedTurbinesRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/reports': {
+      id: '/_protected/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ProtectedReportsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/portfolios': {
       id: '/_protected/portfolios'
       path: '/portfolios'
@@ -420,6 +553,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof ProtectedMapRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/help': {
+      id: '/_protected/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof ProtectedHelpRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/export': {
@@ -441,6 +581,13 @@ declare module '@tanstack/react-router' {
       path: '/comparison'
       fullPath: '/comparison'
       preLoaderRoute: typeof ProtectedComparisonRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/anomalies': {
+      id: '/_protected/anomalies'
+      path: '/anomalies'
+      fullPath: '/anomalies'
+      preLoaderRoute: typeof ProtectedAnomaliesRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/alerts': {
@@ -470,6 +617,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/portfolios/$portfolioId'
       preLoaderRoute: typeof ProtectedPortfoliosPortfolioIdRouteImport
       parentRoute: typeof ProtectedPortfoliosRoute
+    }
+    '/_protected/analytics/weather': {
+      id: '/_protected/analytics/weather'
+      path: '/analytics/weather'
+      fullPath: '/analytics/weather'
+      preLoaderRoute: typeof ProtectedAnalyticsWeatherRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/analytics/revenue': {
+      id: '/_protected/analytics/revenue'
+      path: '/analytics/revenue'
+      fullPath: '/analytics/revenue'
+      preLoaderRoute: typeof ProtectedAnalyticsRevenueRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/analytics/performance': {
+      id: '/_protected/analytics/performance'
+      path: '/analytics/performance'
+      fullPath: '/analytics/performance'
+      preLoaderRoute: typeof ProtectedAnalyticsPerformanceRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/analytics/generation': {
+      id: '/_protected/analytics/generation'
+      path: '/analytics/generation'
+      fullPath: '/analytics/generation'
+      preLoaderRoute: typeof ProtectedAnalyticsGenerationRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/wind-farms/$windfarmId/weather': {
       id: '/_protected/wind-farms/$windfarmId/weather'
@@ -539,22 +714,40 @@ const ProtectedWindFarmsWindfarmIdRouteWithChildren =
 
 interface ProtectedRouteChildren {
   ProtectedAlertsRoute: typeof ProtectedAlertsRoute
+  ProtectedAnomaliesRoute: typeof ProtectedAnomaliesRoute
   ProtectedComparisonRoute: typeof ProtectedComparisonRoute
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
   ProtectedExportRoute: typeof ProtectedExportRoute
+  ProtectedHelpRoute: typeof ProtectedHelpRoute
   ProtectedMapRoute: typeof ProtectedMapRoute
   ProtectedPortfoliosRoute: typeof ProtectedPortfoliosRouteWithChildren
+  ProtectedReportsRoute: typeof ProtectedReportsRoute
+  ProtectedSettingsRoute: typeof ProtectedSettingsRoute
+  ProtectedTurbinesRoute: typeof ProtectedTurbinesRoute
+  ProtectedAnalyticsGenerationRoute: typeof ProtectedAnalyticsGenerationRoute
+  ProtectedAnalyticsPerformanceRoute: typeof ProtectedAnalyticsPerformanceRoute
+  ProtectedAnalyticsRevenueRoute: typeof ProtectedAnalyticsRevenueRoute
+  ProtectedAnalyticsWeatherRoute: typeof ProtectedAnalyticsWeatherRoute
   ProtectedWindFarmsWindfarmIdRoute: typeof ProtectedWindFarmsWindfarmIdRouteWithChildren
   ProtectedWindFarmsIndexRoute: typeof ProtectedWindFarmsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAlertsRoute: ProtectedAlertsRoute,
+  ProtectedAnomaliesRoute: ProtectedAnomaliesRoute,
   ProtectedComparisonRoute: ProtectedComparisonRoute,
   ProtectedDashboardRoute: ProtectedDashboardRoute,
   ProtectedExportRoute: ProtectedExportRoute,
+  ProtectedHelpRoute: ProtectedHelpRoute,
   ProtectedMapRoute: ProtectedMapRoute,
   ProtectedPortfoliosRoute: ProtectedPortfoliosRouteWithChildren,
+  ProtectedReportsRoute: ProtectedReportsRoute,
+  ProtectedSettingsRoute: ProtectedSettingsRoute,
+  ProtectedTurbinesRoute: ProtectedTurbinesRoute,
+  ProtectedAnalyticsGenerationRoute: ProtectedAnalyticsGenerationRoute,
+  ProtectedAnalyticsPerformanceRoute: ProtectedAnalyticsPerformanceRoute,
+  ProtectedAnalyticsRevenueRoute: ProtectedAnalyticsRevenueRoute,
+  ProtectedAnalyticsWeatherRoute: ProtectedAnalyticsWeatherRoute,
   ProtectedWindFarmsWindfarmIdRoute:
     ProtectedWindFarmsWindfarmIdRouteWithChildren,
   ProtectedWindFarmsIndexRoute: ProtectedWindFarmsIndexRoute,

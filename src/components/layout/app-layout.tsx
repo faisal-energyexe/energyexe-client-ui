@@ -14,18 +14,15 @@ import {
   Moon,
   Sun,
   Zap,
-  Activity,
   TrendingUp,
   MapPin,
   HelpCircle,
   DollarSign,
   CloudSun,
-  Calendar,
-  PieChart,
-  Gauge,
   AlertTriangle,
   Scale,
   FolderHeart,
+  Download,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -54,35 +51,28 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { title: 'Wind Farms', icon: Wind, href: '/wind-farms' },
+  { title: 'Map', icon: MapPin, href: '/map' },
   { title: 'Portfolios', icon: FolderHeart, href: '/portfolios' },
   { title: 'Comparison', icon: Scale, href: '/comparison' },
   { title: 'Turbines', icon: Fan, href: '/turbines' },
-  { title: 'Live Monitor', icon: Activity, href: '/live-monitor', live: true },
 ]
 
-// Analytics navigation - Data analysis features
+// Analytics navigation - Portfolio-level data analysis
 const analyticsNavItems: NavItem[] = [
-  { title: 'Generation Analytics', icon: BarChart3, href: '/analytics/generation' },
+  { title: 'Generation', icon: BarChart3, href: '/analytics/generation' },
   { title: 'Revenue & Pricing', icon: DollarSign, href: '/analytics/revenue' },
   { title: 'Weather Impact', icon: CloudSun, href: '/analytics/weather' },
   { title: 'Performance', icon: TrendingUp, href: '/analytics/performance' },
-  { title: 'Forecasting', icon: Calendar, href: '/analytics/forecasting' },
-]
-
-// Insights navigation - Advanced analysis
-const insightsNavItems: NavItem[] = [
-  { title: 'Portfolio Overview', icon: PieChart, href: '/insights/portfolio' },
-  { title: 'Capacity Factor', icon: Gauge, href: '/insights/capacity' },
-  { title: 'Locations Map', icon: MapPin, href: '/insights/locations' },
 ]
 
 // System navigation
 const systemNavItems: NavItem[] = [
   { title: 'Alerts', icon: Bell, href: '/alerts', badge: '3', alert: true },
-  { title: 'Anomaly Detection', icon: AlertTriangle, href: '/anomalies' },
+  { title: 'Anomalies', icon: AlertTriangle, href: '/anomalies' },
   { title: 'Reports', icon: FileText, href: '/reports' },
+  { title: 'Export', icon: Download, href: '/export' },
   { title: 'Settings', icon: Settings, href: '/settings' },
-  { title: 'Help & Support', icon: HelpCircle, href: '/help' },
+  { title: 'Help', icon: HelpCircle, href: '/help' },
 ]
 
 interface AppLayoutProps {
@@ -300,7 +290,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           <TooltipProvider delayDuration={0}>
             <NavGroup label="Main" items={mainNavItems} showLabel={!collapsed} />
             <NavGroup label="Analytics" items={analyticsNavItems} showLabel={!collapsed} />
-            <NavGroup label="Insights" items={insightsNavItems} showLabel={!collapsed} />
             <NavGroup label="System" items={systemNavItems} showLabel={!collapsed} />
           </TooltipProvider>
         </nav>
