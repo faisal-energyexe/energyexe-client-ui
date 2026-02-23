@@ -41,7 +41,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
   const [endDate, setEndDate] = useState(defaultRange.endDate)
   const [datePreset, setDatePreset] = useState('1Y')
   const [activeTab, setActiveTab] = useState('overview')
-  const [excludeRampUp, setExcludeRampUp] = useState(true)
+  const [includeRampUp, setIncludeRampUp] = useState(false)
   const [selectedPeerGroups] = useState<string[]>([
     'bidzone',
     'country',
@@ -55,7 +55,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
   } = useReportData(windfarmId, startDate, endDate, {
     includePeerGroups: selectedPeerGroups,
     generateCommentary: false,
-    excludeRampUp,
+    excludeRampUp: !includeRampUp,
   })
 
   const generateAllMutation = useGenerateAllCommentary()
@@ -106,7 +106,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
+          <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
 
           <DateRangePicker
             startDate={startDate}

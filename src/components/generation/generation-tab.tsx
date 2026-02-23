@@ -27,7 +27,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
   const [preset, setPreset] = useState('30D')
   const [dateRange, setDateRange] = useState(() => getDateRangePreset('30D'))
   const [aggregation, setAggregation] = useState<'hourly' | 'daily' | 'monthly'>('daily')
-  const [excludeRampUp, setExcludeRampUp] = useState(true)
+  const [includeRampUp, setIncludeRampUp] = useState(false)
 
   // Calculate period days for stats
   const periodDays = useMemo(() => {
@@ -43,7 +43,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
     refetch: refetchGeneration,
     isFetching: isFetchingGeneration,
     error: generationError,
-  } = useSingleWindfarmGeneration(windfarmId, dateRange.startDate, dateRange.endDate, aggregation, excludeRampUp)
+  } = useSingleWindfarmGeneration(windfarmId, dateRange.startDate, dateRange.endDate, aggregation, !includeRampUp)
 
   // Fetch stats using comparison API
   const {
@@ -51,7 +51,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
     isLoading: isLoadingStats,
     refetch: refetchStats,
     error: statsError,
-  } = useSingleWindfarmStats(windfarmId, periodDays, excludeRampUp)
+  } = useSingleWindfarmStats(windfarmId, periodDays, !includeRampUp)
 
   // Log errors for debugging
   if (generationError) {
@@ -153,7 +153,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
             onPresetChange={setPreset}
           />
           <DataQualityIndicator score={overallQuality} label />
-          <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
+          <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
         </div>
 
         <div className="flex items-center gap-2">

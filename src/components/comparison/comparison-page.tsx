@@ -15,7 +15,7 @@ export function ComparisonPage() {
   const initialRange = getDateRangePreset('30D')
   const [startDate, setStartDate] = useState(initialRange.startDate)
   const [endDate, setEndDate] = useState(initialRange.endDate)
-  const [excludeRampUp, setExcludeRampUp] = useState(true)
+  const [includeRampUp, setIncludeRampUp] = useState(false)
 
   const canCompare = selectedIds.length >= 2
 
@@ -56,7 +56,7 @@ export function ComparisonPage() {
         <div className="flex items-center gap-2">
           {canCompare && (
             <>
-              <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
+              <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
               <DateRangePicker
                 startDate={startDate}
                 endDate={endDate}
@@ -86,7 +86,7 @@ export function ComparisonPage() {
       {canCompare && (
         <div className="space-y-6">
           {/* Statistics Table */}
-          <ComparisonTable selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={excludeRampUp} />
+          <ComparisonTable selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={!includeRampUp} />
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
@@ -95,11 +95,11 @@ export function ComparisonPage() {
               selectedIds={selectedIds}
               startDate={startDate}
               endDate={endDate}
-              excludeRampUp={excludeRampUp}
+              excludeRampUp={!includeRampUp}
             />
 
             {/* Radar Chart */}
-            <RadarComparison selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={excludeRampUp} />
+            <RadarComparison selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={!includeRampUp} />
           </div>
         </div>
       )}

@@ -27,11 +27,11 @@ function RampUpToggle({ checked, onCheckedChange, className }: RampUpToggleProps
             htmlFor={id}
             className="cursor-pointer text-xs whitespace-nowrap"
           >
-            Exclude ramp-up
+            Include ramp-up
           </Label>
         </TooltipTrigger>
         <TooltipContent side="top">
-          Exclude the initial ramp-up period after a generation unit comes
+          Include the initial ramp-up period after a generation unit comes
           online, when output has not yet stabilised.
         </TooltipContent>
       </Tooltip>
