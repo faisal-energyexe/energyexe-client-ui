@@ -228,6 +228,7 @@ export async function getReportData(
     includePeerGroups?: string[]
     generateCommentary?: boolean
     forceRegenerate?: boolean
+    excludeRampUp?: boolean
   }
 ): Promise<WindfarmReportData> {
   const params = new URLSearchParams()
@@ -242,6 +243,9 @@ export async function getReportData(
   }
   if (options?.forceRegenerate) {
     params.append('force_regenerate', 'true')
+  }
+  if (options?.excludeRampUp !== undefined) {
+    params.append('exclude_ramp_up', String(options.excludeRampUp))
   }
 
   return apiClient.get<WindfarmReportData>(
@@ -369,6 +373,7 @@ export function useReportData(
     includePeerGroups?: string[]
     generateCommentary?: boolean
     forceRegenerate?: boolean
+    excludeRampUp?: boolean
   }
 ) {
   return useQuery<WindfarmReportData>({
@@ -380,6 +385,7 @@ export function useReportData(
       endDate,
       options?.includePeerGroups,
       options?.generateCommentary,
+      options?.excludeRampUp,
     ],
     queryFn: () => getReportData(windfarmId!, startDate!, endDate!, options),
     enabled: windfarmId !== null && !!startDate && !!endDate,

@@ -89,13 +89,15 @@ export async function getComparisonData(
   windfarmIds: number[],
   startDate: string,
   endDate: string,
-  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' = 'daily'
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' = 'daily',
+  excludeRampUp: boolean = true
 ): Promise<ComparisonResponse> {
   const params = new URLSearchParams()
   windfarmIds.forEach((id) => params.append('windfarm_ids', id.toString()))
   params.append('start_date', startDate)
   params.append('end_date', endDate)
   params.append('granularity', granularity)
+  params.append('exclude_ramp_up', excludeRampUp.toString())
 
   const response = await apiClient.get<ComparisonResponse>(`/comparison/compare?${params.toString()}`)
   return response
@@ -103,11 +105,13 @@ export async function getComparisonData(
 
 export async function getComparisonStatistics(
   windfarmIds: number[],
-  periodDays: number = 30
+  periodDays: number = 30,
+  excludeRampUp: boolean = true
 ): Promise<WindfarmStatistics[]> {
   const params = new URLSearchParams()
   windfarmIds.forEach((id) => params.append('windfarm_ids', id.toString()))
   params.append('period_days', periodDays.toString())
+  params.append('exclude_ramp_up', excludeRampUp.toString())
 
   const response = await apiClient.get<WindfarmStatistics[]>(`/comparison/statistics?${params.toString()}`)
   return response
@@ -129,20 +133,21 @@ export function useComparisonData(
   windfarmIds: number[],
   startDate: string | null,
   endDate: string | null,
-  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' = 'daily'
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' = 'daily',
+  excludeRampUp: boolean = true
 ) {
   return useQuery<ComparisonResponse>({
-    queryKey: [...COMPARISON_QUERY_KEY, 'compare', windfarmIds, startDate, endDate, granularity],
-    queryFn: () => getComparisonData(windfarmIds, startDate!, endDate!, granularity),
+    queryKey: [...COMPARISON_QUERY_KEY, 'compare', windfarmIds, startDate, endDate, granularity, excludeRampUp],
+    queryFn: () => getComparisonData(windfarmIds, startDate!, endDate!, granularity, excludeRampUp),
     enabled: windfarmIds.length >= 2 && !!startDate && !!endDate,
     staleTime: 5 * 60 * 1000,
   })
 }
 
-export function useComparisonStatistics(windfarmIds: number[], periodDays: number = 30) {
+export function useComparisonStatistics(windfarmIds: number[], periodDays: number = 30, excludeRampUp: boolean = true) {
   return useQuery<WindfarmStatistics[]>({
-    queryKey: [...COMPARISON_QUERY_KEY, 'statistics', windfarmIds, periodDays],
-    queryFn: () => getComparisonStatistics(windfarmIds, periodDays),
+    queryKey: [...COMPARISON_QUERY_KEY, 'statistics', windfarmIds, periodDays, excludeRampUp],
+    queryFn: () => getComparisonStatistics(windfarmIds, periodDays, excludeRampUp),
     enabled: windfarmIds.length >= 2,
     staleTime: 5 * 60 * 1000,
   })

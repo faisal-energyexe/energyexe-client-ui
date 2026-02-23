@@ -53,13 +53,15 @@ export async function getSingleWindfarmGeneration(
   windfarmId: number,
   startDate: string,
   endDate: string,
-  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily'
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily',
+  excludeRampUp: boolean = true
 ): Promise<SingleWindfarmGenerationResponse> {
   const params = new URLSearchParams()
   params.append('windfarm_ids', windfarmId.toString())
   params.append('start_date', startDate)
   params.append('end_date', endDate)
   params.append('granularity', granularity)
+  params.append('exclude_ramp_up', excludeRampUp.toString())
 
   const url = `/comparison/compare?${params.toString()}`
   console.log('[Generation API] Fetching:', url)
@@ -74,11 +76,13 @@ export async function getSingleWindfarmGeneration(
  */
 export async function getSingleWindfarmStats(
   windfarmId: number,
-  periodDays: number = 30
+  periodDays: number = 30,
+  excludeRampUp: boolean = true
 ): Promise<SingleWindfarmStats | null> {
   const params = new URLSearchParams()
   params.append('windfarm_ids', windfarmId.toString())
   params.append('period_days', periodDays.toString())
+  params.append('exclude_ramp_up', excludeRampUp.toString())
 
   const url = `/comparison/statistics?${params.toString()}`
   console.log('[Stats API] Fetching:', url)
@@ -95,11 +99,12 @@ export function useSingleWindfarmGeneration(
   windfarmId: number | null,
   startDate: string | null,
   endDate: string | null,
-  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily'
+  granularity: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily',
+  excludeRampUp: boolean = true
 ) {
   return useQuery({
-    queryKey: ['single-windfarm-generation', windfarmId, startDate, endDate, granularity],
-    queryFn: () => getSingleWindfarmGeneration(windfarmId!, startDate!, endDate!, granularity),
+    queryKey: ['single-windfarm-generation', windfarmId, startDate, endDate, granularity, excludeRampUp],
+    queryFn: () => getSingleWindfarmGeneration(windfarmId!, startDate!, endDate!, granularity, excludeRampUp),
     enabled: !!windfarmId && !!startDate && !!endDate,
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
@@ -108,10 +113,10 @@ export function useSingleWindfarmGeneration(
 /**
  * Hook to fetch single windfarm statistics
  */
-export function useSingleWindfarmStats(windfarmId: number | null, periodDays: number = 30) {
+export function useSingleWindfarmStats(windfarmId: number | null, periodDays: number = 30, excludeRampUp: boolean = true) {
   return useQuery({
-    queryKey: ['single-windfarm-stats', windfarmId, periodDays],
-    queryFn: () => getSingleWindfarmStats(windfarmId!, periodDays),
+    queryKey: ['single-windfarm-stats', windfarmId, periodDays, excludeRampUp],
+    queryFn: () => getSingleWindfarmStats(windfarmId!, periodDays, excludeRampUp),
     enabled: !!windfarmId,
     staleTime: 5 * 60 * 1000,
   })

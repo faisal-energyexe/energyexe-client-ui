@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Scale, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { RampUpToggle } from '@/components/ui/ramp-up-toggle'
 import { getDateRangePreset } from '@/lib/generation-api'
 import { DateRangePicker } from '@/components/generation/date-range-picker'
 import { ComparisonSelector } from './comparison-selector'
@@ -14,6 +15,7 @@ export function ComparisonPage() {
   const initialRange = getDateRangePreset('30D')
   const [startDate, setStartDate] = useState(initialRange.startDate)
   const [endDate, setEndDate] = useState(initialRange.endDate)
+  const [excludeRampUp, setExcludeRampUp] = useState(true)
 
   const canCompare = selectedIds.length >= 2
 
@@ -53,13 +55,16 @@ export function ComparisonPage() {
         </div>
         <div className="flex items-center gap-2">
           {canCompare && (
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              onDateRangeChange={handleDateRangeChange}
-              preset={preset}
-              onPresetChange={setPreset}
-            />
+            <>
+              <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
+              <DateRangePicker
+                startDate={startDate}
+                endDate={endDate}
+                onDateRangeChange={handleDateRangeChange}
+                preset={preset}
+                onPresetChange={setPreset}
+              />
+            </>
           )}
           {selectedIds.length > 0 && (
             <Button variant="outline" size="sm" onClick={handleReset} className="gap-2">
@@ -81,7 +86,7 @@ export function ComparisonPage() {
       {canCompare && (
         <div className="space-y-6">
           {/* Statistics Table */}
-          <ComparisonTable selectedIds={selectedIds} periodDays={periodDays} />
+          <ComparisonTable selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={excludeRampUp} />
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
@@ -90,10 +95,11 @@ export function ComparisonPage() {
               selectedIds={selectedIds}
               startDate={startDate}
               endDate={endDate}
+              excludeRampUp={excludeRampUp}
             />
 
             {/* Radar Chart */}
-            <RadarComparison selectedIds={selectedIds} periodDays={periodDays} />
+            <RadarComparison selectedIds={selectedIds} periodDays={periodDays} excludeRampUp={excludeRampUp} />
           </div>
         </div>
       )}

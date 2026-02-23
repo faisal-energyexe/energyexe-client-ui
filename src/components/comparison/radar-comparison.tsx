@@ -21,6 +21,7 @@ import {
 interface RadarComparisonProps {
   selectedIds: number[]
   periodDays?: number
+  excludeRampUp?: boolean
 }
 
 interface RadarDataPoint {
@@ -29,8 +30,8 @@ interface RadarDataPoint {
   [key: string]: number | string
 }
 
-export function RadarComparison({ selectedIds, periodDays = 30 }: RadarComparisonProps) {
-  const { data: statistics, isLoading, error } = useComparisonStatistics(selectedIds, periodDays)
+export function RadarComparison({ selectedIds, periodDays = 30, excludeRampUp = true }: RadarComparisonProps) {
+  const { data: statistics, isLoading, error } = useComparisonStatistics(selectedIds, periodDays, excludeRampUp)
 
   // Transform data for radar chart
   const { radarData, windfarmInfo } = useMemo(() => {

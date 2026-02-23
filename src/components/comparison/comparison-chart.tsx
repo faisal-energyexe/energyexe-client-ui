@@ -31,6 +31,7 @@ interface ComparisonChartProps {
   selectedIds: number[]
   startDate: string | null
   endDate: string | null
+  excludeRampUp?: boolean
 }
 
 type MetricType = 'generation' | 'capacity_factor'
@@ -41,7 +42,7 @@ interface ChartDataPoint {
   [key: string]: string | number | null
 }
 
-export function ComparisonChart({ selectedIds, startDate, endDate }: ComparisonChartProps) {
+export function ComparisonChart({ selectedIds, startDate, endDate, excludeRampUp = true }: ComparisonChartProps) {
   const [metricType, setMetricType] = useState<MetricType>('generation')
   const [granularity, setGranularity] = useState<Granularity>('daily')
 
@@ -49,7 +50,8 @@ export function ComparisonChart({ selectedIds, startDate, endDate }: ComparisonC
     selectedIds,
     startDate,
     endDate,
-    granularity
+    granularity,
+    excludeRampUp
   )
 
   // Transform data for chart - pivot by period

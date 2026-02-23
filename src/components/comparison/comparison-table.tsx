@@ -15,6 +15,7 @@ import {
 interface ComparisonTableProps {
   selectedIds: number[]
   periodDays?: number
+  excludeRampUp?: boolean
 }
 
 interface MetricRowProps {
@@ -79,8 +80,8 @@ function MetricRow({
   )
 }
 
-export function ComparisonTable({ selectedIds, periodDays = 30 }: ComparisonTableProps) {
-  const { data: statistics, isLoading, error } = useComparisonStatistics(selectedIds, periodDays)
+export function ComparisonTable({ selectedIds, periodDays = 30, excludeRampUp = true }: ComparisonTableProps) {
+  const { data: statistics, isLoading, error } = useComparisonStatistics(selectedIds, periodDays, excludeRampUp)
 
   const sortedStats = useMemo(() => {
     if (!statistics) return []

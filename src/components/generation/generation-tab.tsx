@@ -3,6 +3,7 @@ import { Download, RefreshCw, BarChart3, TrendingUp, Zap, Clock } from 'lucide-r
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { RampUpToggle } from '@/components/ui/ramp-up-toggle'
 import { GenerationChart } from './generation-chart'
 import { GenerationHeatmap } from './generation-heatmap'
 import { DateRangePicker } from './date-range-picker'
@@ -26,6 +27,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
   const [preset, setPreset] = useState('30D')
   const [dateRange, setDateRange] = useState(() => getDateRangePreset('30D'))
   const [aggregation, setAggregation] = useState<'hourly' | 'daily' | 'monthly'>('daily')
+  const [excludeRampUp, setExcludeRampUp] = useState(true)
 
   // Calculate period days for stats
   const periodDays = useMemo(() => {
@@ -41,7 +43,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
     refetch: refetchGeneration,
     isFetching: isFetchingGeneration,
     error: generationError,
-  } = useSingleWindfarmGeneration(windfarmId, dateRange.startDate, dateRange.endDate, aggregation)
+  } = useSingleWindfarmGeneration(windfarmId, dateRange.startDate, dateRange.endDate, aggregation, excludeRampUp)
 
   // Fetch stats using comparison API
   const {
@@ -49,7 +51,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
     isLoading: isLoadingStats,
     refetch: refetchStats,
     error: statsError,
-  } = useSingleWindfarmStats(windfarmId, periodDays)
+  } = useSingleWindfarmStats(windfarmId, periodDays, excludeRampUp)
 
   // Log errors for debugging
   if (generationError) {
@@ -151,6 +153,7 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
             onPresetChange={setPreset}
           />
           <DataQualityIndicator score={overallQuality} label />
+          <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
         </div>
 
         <div className="flex items-center gap-2">

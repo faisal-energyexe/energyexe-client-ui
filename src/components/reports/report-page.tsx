@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { RampUpToggle } from '@/components/ui/ramp-up-toggle'
 import { DateRangePicker } from '@/components/generation/date-range-picker'
 import { getDateRangePreset } from '@/lib/generation-api'
 import { cn } from '@/lib/utils'
@@ -40,6 +41,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
   const [endDate, setEndDate] = useState(defaultRange.endDate)
   const [datePreset, setDatePreset] = useState('1Y')
   const [activeTab, setActiveTab] = useState('overview')
+  const [excludeRampUp, setExcludeRampUp] = useState(true)
   const [selectedPeerGroups] = useState<string[]>([
     'bidzone',
     'country',
@@ -53,6 +55,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
   } = useReportData(windfarmId, startDate, endDate, {
     includePeerGroups: selectedPeerGroups,
     generateCommentary: false,
+    excludeRampUp,
   })
 
   const generateAllMutation = useGenerateAllCommentary()
@@ -103,6 +106,8 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          <RampUpToggle checked={excludeRampUp} onCheckedChange={setExcludeRampUp} />
+
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
