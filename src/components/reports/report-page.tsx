@@ -106,8 +106,6 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
-
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
@@ -115,6 +113,7 @@ export function ReportPage({ windfarmId, windfarmName }: ReportPageProps) {
             preset={datePreset}
             onPresetChange={setDatePreset}
           />
+          <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
 
           <Button
             variant="outline"

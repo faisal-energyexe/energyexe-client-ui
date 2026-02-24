@@ -56,7 +56,6 @@ export function ComparisonPage() {
         <div className="flex items-center gap-2">
           {canCompare && (
             <>
-              <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
               <DateRangePicker
                 startDate={startDate}
                 endDate={endDate}
@@ -64,6 +63,7 @@ export function ComparisonPage() {
                 preset={preset}
                 onPresetChange={setPreset}
               />
+              <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
             </>
           )}
           {selectedIds.length > 0 && (

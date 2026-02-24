@@ -152,8 +152,8 @@ export function GenerationTab({ windfarmId, nameplateMW }: GenerationTabProps) {
             preset={preset}
             onPresetChange={setPreset}
           />
-          <DataQualityIndicator score={overallQuality} label />
           <RampUpToggle checked={includeRampUp} onCheckedChange={setIncludeRampUp} />
+          <DataQualityIndicator score={overallQuality} label />
         </div>
 
         <div className="flex items-center gap-2">
