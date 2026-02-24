@@ -10,11 +10,6 @@ export interface WindfarmForComparison {
   name: string
   capacity_mw: number | null
   has_data: boolean
-  data_range: {
-    start: string | null
-    end: string | null
-  }
-  record_count: number
 }
 
 export interface ComparisonDataPoint {
@@ -30,6 +25,7 @@ export interface ComparisonDataPoint {
   avg_raw_capacity: number | null
   avg_capacity: number | null
   data_points: number
+  ramp_up_points: number
 }
 
 export interface ComparisonSummary {

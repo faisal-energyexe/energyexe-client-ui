@@ -1,14 +1,6 @@
-import { useMemo, useState } from 'react'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from 'recharts'
+import { useMemo, useState, useCallback, lazy, Suspense } from 'react'
+
+const Plot = lazy(() => import('react-plotly.js'))
 import { TrendingUp, BarChart3 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -23,7 +15,6 @@ import {
 import {
   useComparisonData,
   type ComparisonDataPoint,
-  formatGeneration,
   getChartColor,
 } from '@/lib/comparison-api'
 
@@ -32,17 +23,19 @@ interface ComparisonChartProps {
   startDate: string | null
   endDate: string | null
   excludeRampUp?: boolean
+  includeRampUp?: boolean
 }
 
 type MetricType = 'generation' | 'capacity_factor'
 type Granularity = 'hourly' | 'daily' | 'weekly' | 'monthly'
 
-interface ChartDataPoint {
-  period: string
-  [key: string]: string | number | null
-}
-
-export function ComparisonChart({ selectedIds, startDate, endDate, excludeRampUp = true }: ComparisonChartProps) {
+export function ComparisonChart({
+  selectedIds,
+  startDate,
+  endDate,
+  excludeRampUp = true,
+  includeRampUp = false,
+}: ComparisonChartProps) {
   const [metricType, setMetricType] = useState<MetricType>('generation')
   const [granularity, setGranularity] = useState<Granularity>('daily')
 
@@ -51,79 +44,214 @@ export function ComparisonChart({ selectedIds, startDate, endDate, excludeRampUp
     startDate,
     endDate,
     granularity,
-    excludeRampUp
+    excludeRampUp,
   )
 
-  // Transform data for chart - pivot by period
-  const chartData = useMemo(() => {
-    if (!data?.data) return []
-
-    // Group by period
-    const periodMap = new Map<string, ChartDataPoint>()
-
-    data.data.forEach((point: ComparisonDataPoint) => {
-      if (!periodMap.has(point.period)) {
-        periodMap.set(point.period, { period: point.period })
-      }
-
-      const periodData = periodMap.get(point.period)!
-      const value =
-        metricType === 'generation'
-          ? point.total_generation
-          : point.avg_capacity_factor != null
-            ? point.avg_capacity_factor * 100
-            : null
-
-      periodData[`wf_${point.windfarm_id}`] = value
-    })
-
-    return Array.from(periodMap.values()).sort((a, b) =>
-      String(a.period).localeCompare(String(b.period))
-    )
-  }, [data, metricType])
-
-  // Get unique windfarm info for legend
+  // Get unique windfarm info preserving selection order
   const windfarmInfo = useMemo(() => {
     if (!data?.data) return []
-
     const seen = new Set<number>()
     const info: Array<{ id: number; name: string }> = []
-
     data.data.forEach((point: ComparisonDataPoint) => {
       if (!seen.has(point.windfarm_id)) {
         seen.add(point.windfarm_id)
         info.push({ id: point.windfarm_id, name: point.windfarm_name })
       }
     })
-
-    // Sort by selectedIds order
     return selectedIds
       .map((id) => info.find((i) => i.id === id))
       .filter((i): i is { id: number; name: string } => i != null)
   }, [data, selectedIds])
 
-  const formatXAxis = (value: string) => {
-    if (granularity === 'hourly') {
-      return value.slice(11, 16) // HH:MM
+  // Group data by windfarm, sorted by period
+  const perWinffarm = useMemo(() => {
+    if (!data?.data) return new Map<number, ComparisonDataPoint[]>()
+    const map = new Map<number, ComparisonDataPoint[]>()
+    data.data.forEach((pt) => {
+      if (!map.has(pt.windfarm_id)) map.set(pt.windfarm_id, [])
+      map.get(pt.windfarm_id)!.push(pt)
+    })
+    // Sort each windfarm's data by period
+    for (const arr of map.values()) {
+      arr.sort((a, b) => a.period.localeCompare(b.period))
     }
-    if (granularity === 'monthly') {
-      return value // Already YYYY-MM
+    return map
+  }, [data])
+
+  // Build ramp-up highlight shapes (vertical bands over periods with ramp-up data)
+  const rampUpShapes = useMemo(() => {
+    if (!includeRampUp || !data?.data) return []
+
+    // Collect periods that have any ramp-up points across any windfarm
+    const rampUpPeriods = new Set<string>()
+    data.data.forEach((pt) => {
+      if (pt.ramp_up_points > 0) rampUpPeriods.add(pt.period)
+    })
+
+    if (rampUpPeriods.size === 0) return []
+
+    // Sort periods to find contiguous ranges
+    const sorted = Array.from(rampUpPeriods).sort()
+
+    // Build contiguous ranges for cleaner shapes
+    const ranges: Array<{ start: string; end: string }> = []
+    let rangeStart = sorted[0]
+    let prev = sorted[0]
+
+    for (let i = 1; i < sorted.length; i++) {
+      const cur = sorted[i]
+      // Check if consecutive (within 2x the expected gap)
+      const prevDate = new Date(prev)
+      const curDate = new Date(cur)
+      const gapMs = curDate.getTime() - prevDate.getTime()
+      const maxGapMs =
+        granularity === 'hourly'
+          ? 2 * 3600 * 1000
+          : granularity === 'daily'
+            ? 2 * 86400 * 1000
+            : granularity === 'weekly'
+              ? 2 * 7 * 86400 * 1000
+              : 2 * 31 * 86400 * 1000
+
+      if (gapMs > maxGapMs) {
+        ranges.push({ start: rangeStart, end: prev })
+        rangeStart = cur
+      }
+      prev = cur
     }
-    // Daily/Weekly - show month/day
-    const date = new Date(value)
-    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-  }
+    ranges.push({ start: rangeStart, end: prev })
 
-  const formatTooltipValue = (value: number | null | undefined) => {
-    if (value == null) return 'N/A'
-    return metricType === 'generation'
-      ? formatGeneration(value)
-      : `${value.toFixed(1)}%`
-  }
+    return ranges.map((r) => ({
+      type: 'rect' as const,
+      xref: 'x' as const,
+      yref: 'paper' as const,
+      x0: r.start,
+      x1: r.end,
+      y0: 0,
+      y1: 1,
+      fillcolor: 'rgba(251, 191, 36, 0.12)',
+      line: { width: 1, color: 'rgba(251, 191, 36, 0.3)', dash: 'dot' as const },
+      layer: 'below' as const,
+    }))
+  }, [includeRampUp, data, granularity])
 
-  if (selectedIds.length < 2) {
-    return null
-  }
+  // Build ramp-up annotation
+  const rampUpAnnotations = useMemo(() => {
+    if (rampUpShapes.length === 0) return []
+    // Place one label on the first ramp-up region
+    const first = rampUpShapes[0]
+    return [
+      {
+        x: first.x0,
+        y: 1,
+        xref: 'x' as const,
+        yref: 'paper' as const,
+        text: 'Ramp-up period',
+        showarrow: false,
+        font: { size: 11, color: 'rgb(251, 191, 36)' },
+        bgcolor: 'rgba(251, 191, 36, 0.15)',
+        bordercolor: 'rgba(251, 191, 36, 0.4)',
+        borderwidth: 1,
+        borderpad: 3,
+        xanchor: 'left' as const,
+        yanchor: 'top' as const,
+        yshift: -4,
+      },
+    ]
+  }, [rampUpShapes])
+
+  // Build Plotly traces
+  const traces = useMemo(() => {
+    if (!windfarmInfo.length) return []
+
+    return windfarmInfo.map((wf, index) => {
+      const points = perWinffarm.get(wf.id) || []
+      const x = points.map((p) => p.period)
+      const color = getChartColor(index)
+
+      if (metricType === 'generation') {
+        const y = points.map((p) => p.total_generation)
+        return {
+          x,
+          y,
+          type: 'bar' as const,
+          name: wf.name,
+          marker: { color, opacity: 0.85 },
+          hovertemplate:
+            '<b>%{fullData.name}</b><br>%{x}<br>Generation: %{y:,.1f} MWh<extra></extra>',
+        }
+      } else {
+        const y = points.map((p) =>
+          p.avg_capacity_factor != null ? p.avg_capacity_factor * 100 : null,
+        )
+        return {
+          x,
+          y,
+          type: 'scatter' as const,
+          mode: 'lines' as const,
+          name: wf.name,
+          line: { color, width: 2 },
+          connectgaps: false,
+          hovertemplate:
+            '<b>%{fullData.name}</b><br>%{x}<br>CF: %{y:.1f}%<extra></extra>',
+        }
+      }
+    })
+  }, [windfarmInfo, perWinffarm, metricType])
+
+  const layout = useMemo(
+    () => ({
+      autosize: true,
+      margin: { t: 10, r: 20, b: 50, l: 70 },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { color: 'hsl(215, 20%, 65%)', size: 12 },
+      xaxis: {
+        gridcolor: 'rgba(100,116,139,0.15)',
+        linecolor: 'rgba(100,116,139,0.3)',
+        tickangle: granularity === 'hourly' ? -45 : 0,
+      },
+      yaxis: {
+        title: { text: metricType === 'generation' ? 'Generation (MWh)' : 'Capacity Factor (%)' },
+        gridcolor: 'rgba(100,116,139,0.15)',
+        linecolor: 'rgba(100,116,139,0.3)',
+        rangemode: 'tozero' as const,
+      },
+      barmode: 'group' as const,
+      bargap: 0.15,
+      bargroupgap: 0.05,
+      legend: {
+        orientation: 'h' as const,
+        y: -0.15,
+        x: 0.5,
+        xanchor: 'center' as const,
+        font: { size: 11 },
+      },
+      hovermode: 'x unified' as const,
+      shapes: rampUpShapes,
+      annotations: rampUpAnnotations,
+    }),
+    [metricType, granularity, rampUpShapes, rampUpAnnotations],
+  )
+
+  const config = useMemo(
+    () => ({
+      responsive: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: [
+        'lasso2d' as const,
+        'select2d' as const,
+        'autoScale2d' as const,
+      ],
+    }),
+    [],
+  )
+
+  const handleRelayout = useCallback(() => {
+    // Placeholder for future zoom/pan handling
+  }, [])
+
+  if (selectedIds.length < 2) return null
 
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">
@@ -155,10 +283,7 @@ export function ComparisonChart({ selectedIds, startDate, endDate, excludeRampUp
           </div>
 
           {/* Granularity Selector */}
-          <Select
-            value={granularity}
-            onValueChange={(v) => setGranularity(v as Granularity)}
-          >
+          <Select value={granularity} onValueChange={(v) => setGranularity(v as Granularity)}>
             <SelectTrigger className="w-[120px] bg-muted/30">
               <SelectValue />
             </SelectTrigger>
@@ -174,84 +299,22 @@ export function ComparisonChart({ selectedIds, startDate, endDate, excludeRampUp
       <CardContent>
         {isLoading ? (
           <Skeleton className="h-[400px] w-full" />
-        ) : error || !chartData.length ? (
+        ) : error || !traces.length ? (
           <div className="h-[400px] flex items-center justify-center text-muted-foreground">
             {error ? 'Failed to load comparison data' : 'No data available for the selected period'}
           </div>
         ) : (
           <div className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(215, 20%, 40%)" opacity={0.3} />
-                <XAxis
-                  dataKey="period"
-                  tickFormatter={formatXAxis}
-                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
-                  tickLine={{ stroke: 'hsl(215, 20%, 40%)' }}
-                  axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
-                  interval="preserveStartEnd"
-                />
-                <YAxis
-                  tick={{ fill: 'hsl(215, 20%, 65%)', fontSize: 12 }}
-                  tickLine={{ stroke: 'hsl(215, 20%, 40%)' }}
-                  axisLine={{ stroke: 'hsl(215, 20%, 40%)' }}
-                  tickFormatter={(v) =>
-                    metricType === 'generation'
-                      ? v >= 1000
-                        ? `${(v / 1000).toFixed(0)}k`
-                        : v.toFixed(0)
-                      : `${v}%`
-                  }
-                  label={{
-                    value: metricType === 'generation' ? 'Generation (MWh)' : 'Capacity Factor (%)',
-                    angle: -90,
-                    position: 'insideLeft',
-                    style: { fill: 'hsl(215, 20%, 65%)' },
-                  }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(222, 47%, 11%)',
-                    border: '1px solid hsl(215, 20%, 40%)',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                  }}
-                  labelStyle={{ color: 'hsl(210, 40%, 98%)' }}
-                  formatter={(value, name) => {
-                    const numValue = typeof value === 'number' ? value : null
-                    const strName = String(name)
-                    const wfInfo = windfarmInfo.find((i) => `wf_${i.id}` === strName)
-                    return [formatTooltipValue(numValue), wfInfo?.name || strName]
-                  }}
-                  labelFormatter={(label) => {
-                    if (granularity === 'hourly') return String(label)
-                    return new Date(String(label)).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })
-                  }}
-                />
-                <Legend
-                  formatter={(value) => {
-                    const wfInfo = windfarmInfo.find((i) => `wf_${i.id}` === value)
-                    return wfInfo?.name || value
-                  }}
-                />
-                {windfarmInfo.map((wf, index) => (
-                  <Line
-                    key={wf.id}
-                    type="monotone"
-                    dataKey={`wf_${wf.id}`}
-                    name={`wf_${wf.id}`}
-                    stroke={getChartColor(index)}
-                    strokeWidth={2}
-                    dot={false}
-                    connectNulls
-                  />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
+            <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+              <Plot
+                data={traces}
+                layout={layout}
+                config={config}
+                useResizeHandler
+                style={{ width: '100%', height: '100%' }}
+                onRelayout={handleRelayout}
+              />
+            </Suspense>
           </div>
         )}
       </CardContent>

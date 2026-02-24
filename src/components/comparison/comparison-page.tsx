@@ -96,6 +96,7 @@ export function ComparisonPage() {
               startDate={startDate}
               endDate={endDate}
               excludeRampUp={!includeRampUp}
+              includeRampUp={includeRampUp}
             />
 
             {/* Radar Chart */}

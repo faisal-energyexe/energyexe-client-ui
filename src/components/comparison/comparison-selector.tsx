@@ -172,16 +172,10 @@ export function ComparisonSelector({
                         <div>
                           <p className="font-medium text-sm">{wf.name}</p>
                           <p className="text-xs text-muted-foreground">
-                            {formatCapacityMW(wf.capacity_mw)} • {wf.record_count.toLocaleString()} records
+                            {formatCapacityMW(wf.capacity_mw)}
                           </p>
                         </div>
                       </div>
-                      {wf.data_range.start && wf.data_range.end && (
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(wf.data_range.start).toLocaleDateString()} -{' '}
-                          {new Date(wf.data_range.end).toLocaleDateString()}
-                        </span>
-                      )}
                     </button>
                   )
                 })
